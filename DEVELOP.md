@@ -1,4 +1,4 @@
-# volto-addon-template
+# volto-workflow-progress
 
 ## Develop
 
@@ -12,15 +12,15 @@ Before starting make sure your development environment is properly set. See [Vol
 
 1.  Create new volto app
 
-        $ yo @plone/volto my-volto-project --addon @eeacms/volto-addon-template
+        $ yo @plone/volto my-volto-project --addon @eeacms/volto-workflow-progress
         $ cd my-volto-project
 
 1.  Add the following to `mrs.developer.json`:
 
         {
-            "volto-addon-template": {
-                "url": "https://github.com/eea/volto-addon-template.git",
-                "package": "@eeacms/volto-addon-template",
+            "volto-workflow-progress": {
+                "url": "https://github.com/eea/volto-workflow-progress.git",
+                "package": "@eeacms/volto-workflow-progress",
                 "branch": "develop",
                 "path": "src"
             }
@@ -49,4 +49,4 @@ Before starting make sure your development environment is properly set. See [Vol
 
 1.  Happy hacking!
 
-        $ cd src/addons/volto-addon-template/
+        $ cd src/addons/volto-workflow-progress/
