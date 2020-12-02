@@ -5,10 +5,7 @@ import { getWorkflowProgress } from './actions';
 import './less/editor.less';
 
 /**
- * @summary The React component that allows the footnotes block view to be
- * edited using a form in a sidebar portal.
- * @param {object} props Contains the props received by any Edit component of a
- * registered Volto block: `selected`, `block`, `data`, `onChangeBlock` etc.
+ * @summary The React component that shows progress tracking of selected content.
  */
 const ProgressWorkflow = (props) => {
   const { content, pathname } = props;
@@ -17,13 +14,12 @@ const ProgressWorkflow = (props) => {
 
   const [visible, setVisible] = useState(false);
   const [workflowProgressSteps, setWorkflowProgressSteps] = useState([]);
-  const [currentState, setCurrentState] = useState({});
+  const [currentState, setCurrentState] = useState(null);
   const workflowProgress = useSelector((state) => state?.workflowProgress);
 
   const setVisibleSide = () => {
     setVisible(!visible);
   };
-
   const findCurrentState = (steps, done) => {
     const arrayContainingCurrentState = steps.find(
       (itemElements) => itemElements[1] === done,
@@ -42,20 +38,23 @@ const ProgressWorkflow = (props) => {
   };
 
   useEffect(() => {
-    if (workflowProgress.result) {
+    if (
+      workflowProgress.result &&
+      Array.isArray(workflowProgress.result.steps)
+    ) {
       findCurrentState(
         workflowProgress.result.steps,
         workflowProgress.result.done,
       );
       setWorkflowProgressSteps(workflowProgress.result.steps);
+    } else {
+      setCurrentState(null);
     }
   }, [workflowProgress]);
 
-  // Similar to componentDidMount and componentDidUpdate:
-  // used only once at mount
   useEffect(() => {
     dispatch(getWorkflowProgress(pathname));
-  }, [dispatch, pathname, props]); // to be used only once at mount
+  }, [dispatch, pathname, props]);
 
   const itemTracker = (tracker) => (
     <li
@@ -79,23 +78,18 @@ const ProgressWorkflow = (props) => {
   };
 
   return (
-    <>
-      <Portal
-        node={__CLIENT__ && document.querySelector('#toolbar .toolbar-actions')}
-      >
+    <Portal
+      node={__CLIENT__ && document.querySelector('#toolbar .toolbar-actions')}
+    >
+      {currentState ? (
         <>
-          <div
-            className={`review-state-text ${
-              currentStateClass[currentStateKey]
-                ? currentStateClass[currentStateKey]
-                : ''
-            }`}
-          >
-            {currentState.title}
-          </div>
           <div>
             <button
-              className="circle-right-btn"
+              className={`circle-right-btn ${
+                currentStateClass[currentStateKey]
+                  ? `review-state-${currentStateKey}`
+                  : ''
+              }`}
               id="toolbar-cut-blocks"
               onClick={setVisibleSide}
             >
@@ -111,9 +105,18 @@ const ProgressWorkflow = (props) => {
               </div>
             ) : null}
           </div>
+          <div
+            className={`review-state-text ${
+              currentStateClass[currentStateKey]
+                ? `review-state-${currentStateKey}`
+                : ''
+            }`}
+          >
+            {currentState.title}
+          </div>
         </>
-      </Portal>
-    </>
+      ) : null}
+    </Portal>
   );
 };
 export default ProgressWorkflow;

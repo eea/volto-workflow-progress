@@ -14,9 +14,6 @@ const applyConfig = (config) => {
       {
         match: '',
         component: ProgressWorkflow,
-        props: {
-          'google-tag': '123456',
-        },
       },
     ],
   };

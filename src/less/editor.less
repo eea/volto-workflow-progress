@@ -1,16 +1,21 @@
-
+@default-state-color: rgb(246, 168, 8);
+@published-state-color: rgb(0, 123, 193);
+@private-state-color: rgb(237, 64, 51);
+@border-color: rgba(0, 0, 0, 0.3);
+@progress-indicator-color: #607D8B;
+@progress-green: darkseagreen;
 
 .circle-right-btn {
 	height: 45px;
 	width: 45px;
 	border-radius: 50%;
-	border: 2px solid #007eb1 !important;
+	border: 2px solid @default-state-color !important;
 	font-size:16px;
 	font-weight: 600;
-  color: #007eb1 !important;
+  color: @default-state-color !important;
   text-align: center !important;
   text-decoration: none;
-  display: inline-block !important;
+	display: inline-block !important;
   margin: 4px 2px;
   cursor: pointer !important;
 }
@@ -35,10 +40,10 @@
   overflow: hidden;
   padding: 2rem;
   color: #fff;
-  background: #607D8B;
-  -moz-box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  background:@progress-indicator-color;
+  -moz-box-shadow: 0 0 15px @border-color;
+  -webkit-box-shadow: 0 0 15px @border-color;
+  box-shadow: 0 0 15px @border-color;
 }
 
 .progress {
@@ -49,82 +54,85 @@
 }
 
 .review-state-text {
-	color: rgb(0, 123, 193);
+	color: @published-state-color !important;
 	text-align: center;
 	font-weight: 500;
 }
 .review-state-text {
-	color: rgb(246, 168, 8);
+	color: @default-state-color !important;
+	border-color: @default-state-color !important;
 }
-.review-state-text.published {
-	color: rgb(0, 123, 193);
+.review-state-published {
+	color: @published-state-color !important;
+	border-color: @published-state-color !important;
 }
-.review-state-text.private {
-	color:rgb(237, 64, 51);
+.review-state-private {
+	color:@private-state-color !important;
+	border-color:@private-state-color !important;
 }
 
 .progress__item {
-  position: relative;
-  min-height: 75px;
-  counter-increment: list;
-  padding-left: 0.5rem;
-  opacity: 0.4;
-}
-.progress__item:before {
-  content: "";
-  position: absolute;
-  left: -1.5rem;
-  top: 28px;
-  height: 60%;
-  width: 1px;
-  border-left: 1px solid #607D8B;
-}
-.progress__item:after {
-  content: counter(list);
-  position: absolute;
-  top: 0;
-  left: -2.5rem;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: #607D8B;
-  color: white;
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 2rem;
-  text-align: center;
-  border: 1px solid #607D8B;
-}
-.progress__item:last-child:before {
-  border: none;
-}
-.progress__item.progress__item--completed:before {
-  border-color: green;
+	position: relative;
+	min-height: 75px;
+	counter-increment: list;
+	padding-left: 0.5rem;
+	opacity: 0.4;
+	&:before {
+		content: "";
+		position: absolute;
+		left: -1.6rem;
+		top: 26px;
+		height: calc(100% - 26px);
+		width: 1px;
+		border-left: 1px solid @progress-indicator-color;
+	}
+	&:after {
+		content: counter(list);
+		position: absolute;
+		top: 0;
+		left: -2.5rem;
+		width: 26px;
+		height: 26px;
+		border-radius: 50%;
+		background: @progress-indicator-color;
+		color: white;
+		font-weight: 400;
+		font-size: 13px;
+		line-height: 2rem;
+		text-align: center;
+		border: 1px solid @progress-indicator-color;
+	}
+	&:last-child {
+		&:before {
+			border: none;
+		}
+	}
 }
 .progress__item.progress__item--completed {
-  opacity: 1;
-  color: green;
-}
-.progress__item.progress__item--completed:after {
-	content: "\2713";
-	font-weight: 400;
-	background: green;
-	color: white;
+	&:before {
+		border-color: @progress-green;
+	}
+	opacity: 1;
+	color: @progress-green;
+	&:after {
+		content: "\2713";
+		font-weight: 400;
+		background: @progress-green;
+		color: white;
+	}
 }
 .progress__item.progress__item--active {
-  opacity: 1;
+	opacity: 1;
+	&:after {
+		background: @progress-indicator-color;
+		color: white;
+	}
 }
-.progress__item.progress__item--active:after {
-  background: #607D8B;
-  color: white;
-}
-
 .progress__title {
-  padding: 0.4rem 0 0.5rem;
-  margin: 0;
-  font-size: 1rem;
+	padding: 0.4rem 0 0.5rem;
+	margin: 0;
+	font-size: 1rem;
 }
-
 .progress__info {
-  font-size: 13px;
+	font-size: 13px;
 }
