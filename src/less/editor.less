@@ -76,7 +76,6 @@
 	min-height: 75px;
 	counter-increment: list;
 	padding-left: 0.5rem;
-	opacity: 0.4;
 	&:before {
 		content: "";
 		position: absolute;
@@ -112,7 +111,6 @@
 	&:before {
 		border-color: @progress-green;
 	}
-	opacity: 1;
 	color: @progress-green;
 	&:after {
 		content: "\2713";
@@ -121,17 +119,23 @@
 		color: white;
 	}
 }
-.progress__item.progress__item--active {
+.progress__title {
 	opacity: 1;
+	padding: 0.4rem 0 0.5rem;
+	margin: 0;
+	font-size: 1rem;
+}
+.progress__item.progress__item--active {
 	&:after {
 		background: @progress-indicator-color;
 		color: white;
 	}
+	.progress__title.title-incomplete {
+		opacity: 0.4;
+	}
 }
-.progress__title {
-	padding: 0.4rem 0 0.5rem;
-	margin: 0;
-	font-size: 1rem;
+.progress__item.progress__item--next {
+	opacity: 0.4;
 }
 .progress__info {
 	font-size: 13px;

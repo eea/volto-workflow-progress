@@ -17,6 +17,7 @@ const ProgressWorkflow = (props) => {
   const [currentState, setCurrentState] = useState(null);
   const workflowProgress = useSelector((state) => state?.workflowProgress);
 
+  // toggle progress component visible by clicking on the button
   const setVisibleSide = () => {
     setVisible(!visible);
   };
@@ -38,6 +39,7 @@ const ProgressWorkflow = (props) => {
   };
 
   useEffect(() => {
+    // filter out paths that don't have workflow (home, login etc)
     if (
       workflowProgress.result &&
       Array.isArray(workflowProgress.result.steps)
@@ -48,12 +50,13 @@ const ProgressWorkflow = (props) => {
       );
       setWorkflowProgressSteps(workflowProgress.result.steps);
     } else {
-      setCurrentState(null);
+      setCurrentState(null); // reset current state only if a path without workflow is
+      // chosen to avoid flicker for those that have workflow
     }
   }, [workflowProgress]);
 
   useEffect(() => {
-    dispatch(getWorkflowProgress(pathname));
+    dispatch(getWorkflowProgress(pathname)); // the are paths that don't have workflow (home, login etc)
   }, [dispatch, pathname, props]);
 
   const itemTracker = (tracker) => (
@@ -63,11 +66,17 @@ const ProgressWorkflow = (props) => {
           ? 'progress__item--active'
           : tracker[1] < currentState.done
           ? 'progress__item--completed'
-          : 'progress__item'
+          : 'progress__item--next'
       }`}
     >
       {tracker[2].map((title) => (
-        <p className="progress__title">{title}</p>
+        <p
+          className={`progress__title ${
+            currentState.title !== title ? 'title-incomplete' : ''
+          }`}
+        >
+          {title}
+        </p>
       ))}
     </li>
   );
