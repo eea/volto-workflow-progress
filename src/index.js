@@ -7,16 +7,15 @@ const applyConfig = (config) => {
     workflowProgress,
   };
 
-  config.settings = {
-    ...config.settings,
-    appExtras: [
-      ...config.appExtras,
-      {
-        match: '',
-        component: ProgressWorkflow,
-      },
-    ],
-  };
+  const appExtras = config.settings.appExtras || [];
+
+  config.settings.appExtras = [
+    ...appExtras,
+    {
+      match: '',
+      component: ProgressWorkflow,
+    },
+  ];
 
   return config;
 };
