@@ -46,6 +46,14 @@ Demo GIF
 
 1. Happy editing!
 
+## Dependencies
+
+### Backend
+
+- [Plone](https://plone.org/download)
+- [plone.restapi](https://pypi.org/project/plone.restapi/)
+- [eea.progress.workflow](https://pypi.org/project/eea.progress.workflow)
+
 ## How to contribute
 
 See [DEVELOP.md](https://github.com/eea/volto-workflow-progress/blob/master/DEVELOP.md).

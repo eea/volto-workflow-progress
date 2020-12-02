@@ -2,48 +2,48 @@
 @published-state-color: rgb(0, 123, 193);
 @private-state-color: rgb(237, 64, 51);
 @border-color: rgba(0, 0, 0, 0.3);
-@progress-indicator-color: #607D8B;
+@progress-indicator-color: #607d8b;
 @progress-green: darkseagreen;
 
 .circle-right-btn {
-	height: 45px;
-	width: 45px;
-	border-radius: 50%;
-	border: 2px solid @default-state-color !important;
-	font-size:16px;
-	font-weight: 600;
+  display: inline-block !important;
+  width: 45px;
+  height: 45px;
+  border: 2px solid @default-state-color !important;
+  margin: 4px 2px;
+  border-radius: 50%;
   color: @default-state-color !important;
+  cursor: pointer !important;
+  font-size: 16px;
+  font-weight: 600;
   text-align: center !important;
   text-decoration: none;
-	display: inline-block !important;
-  margin: 4px 2px;
-  cursor: pointer !important;
 }
 
 .sidenav-ol {
-  width: 200px;
   position: fixed;
   z-index: 1;
-	top: 0;
+  top: 0;
   left: 80px;
-  background: #fff;
-  overflow-x: hidden;
+  width: 200px;
   padding: 8px 0;
-	box-shadow: 0 1px 2px 0 #c7d5d8;
+  background: #fff;
+  box-shadow: 0 1px 2px 0 #c7d5d8;
+  overflow-x: hidden;
 }
 
 .progressContainer {
   position: relative;
+  overflow: hidden;
   width: 300px;
   height: 100vh;
-  margin: 0 auto;
-  overflow: hidden;
   padding: 2rem;
-  color: #fff;
-  background:@progress-indicator-color;
+  margin: 0 auto;
+  background: @progress-indicator-color;
   -moz-box-shadow: 0 0 15px @border-color;
   -webkit-box-shadow: 0 0 15px @border-color;
   box-shadow: 0 0 15px @border-color;
+  color: #fff;
 }
 
 .progress {
@@ -54,89 +54,102 @@
 }
 
 .review-state-text {
-	color: @published-state-color !important;
-	text-align: center;
-	font-weight: 500;
+  color: @published-state-color !important;
+  font-weight: 500;
+  text-align: center;
 }
+
 .review-state-text {
-	color: @default-state-color !important;
-	border-color: @default-state-color !important;
+  border-color: @default-state-color !important;
+  color: @default-state-color !important;
 }
+
 .review-state-published {
-	color: @published-state-color !important;
-	border-color: @published-state-color !important;
+  border-color: @published-state-color !important;
+  color: @published-state-color !important;
 }
+
 .review-state-private {
-	color:@private-state-color !important;
-	border-color:@private-state-color !important;
+  border-color: @private-state-color !important;
+  color: @private-state-color !important;
 }
 
 .progress__item {
-	position: relative;
-	min-height: 75px;
-	counter-increment: list;
-	padding-left: 0.5rem;
-	&:before {
-		content: "";
-		position: absolute;
-		left: -1.6rem;
-		top: 26px;
-		height: calc(100% - 26px);
-		width: 1px;
-		border-left: 1px solid @progress-indicator-color;
-	}
-	&:after {
-		content: counter(list);
-		position: absolute;
-		top: 0;
-		left: -2.5rem;
-		width: 26px;
-		height: 26px;
-		border-radius: 50%;
-		background: @progress-indicator-color;
-		color: white;
-		font-weight: 400;
-		font-size: 13px;
-		line-height: 2rem;
-		text-align: center;
-		border: 1px solid @progress-indicator-color;
-	}
-	&:last-child {
-		&:before {
-			border: none;
-		}
-	}
+  position: relative;
+  min-height: 75px;
+  padding-left: 0.5rem;
+  counter-increment: list;
+
+  &:before {
+    position: absolute;
+    top: 26px;
+    left: -1.6rem;
+    width: 1px;
+    height: calc(100% - 26px);
+    border-left: 1px solid @progress-indicator-color;
+    content: '';
+  }
+
+  &:after {
+    position: absolute;
+    top: 0;
+    left: -2.5rem;
+    width: 26px;
+    height: 26px;
+    border: 1px solid @progress-indicator-color;
+    background: @progress-indicator-color;
+    border-radius: 50%;
+    color: white;
+    content: counter(list);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 2rem;
+    text-align: center;
+  }
+
+  &:last-child {
+    &:before {
+      border: none;
+    }
+  }
 }
+
 .progress__item.progress__item--completed {
-	&:before {
-		border-color: @progress-green;
-	}
-	color: @progress-green;
-	&:after {
-		content: "\2713";
-		font-weight: 400;
-		background: @progress-green;
-		color: white;
-	}
+  &:before {
+    border-color: @progress-green;
+  }
+  color: @progress-green;
+
+  &:after {
+    background: @progress-green;
+    color: white;
+    content: '\2713';
+    font-weight: 400;
+  }
 }
+
 .progress__title {
-	opacity: 1;
-	padding: 0.4rem 0 0.5rem;
-	margin: 0;
-	font-size: 1rem;
+  padding: 0.4rem 0 0.5rem;
+  margin: 0;
+  font-size: 1rem;
+  opacity: 1;
 }
+
 .progress__item.progress__item--active {
-	&:after {
-		background: @progress-indicator-color;
-		color: white;
-	}
-	.progress__title.title-incomplete {
-		opacity: 0.4;
-	}
+  &:after {
+    background: @progress-indicator-color;
+    color: white;
+  }
+
+  .progress__title.title-incomplete {
+    opacity: 0.4;
+  }
 }
+
 .progress__item.progress__item--next {
-	opacity: 0.4;
+  opacity: 0.4;
 }
+
 .progress__info {
-	font-size: 13px;
+  font-size: 13px;
 }
