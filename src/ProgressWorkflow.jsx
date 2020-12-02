@@ -43,6 +43,7 @@ const ProgressWorkflow = (props) => {
     // filter out paths that don't have workflow (home, login etc)
     if (
       workflowProgress.result &&
+      !workflowProgress.workflow?.error &&
       Array.isArray(workflowProgress.result.steps)
     ) {
       findCurrentState(
@@ -58,7 +59,7 @@ const ProgressWorkflow = (props) => {
 
   useEffect(() => {
     dispatch(getWorkflowProgress(pathname)); // the are paths that don't have workflow (home, login etc)
-  }, [dispatch, pathname, props]);
+  }, [dispatch, pathname]);
 
   const itemTracker = (tracker) => (
     <li
@@ -125,7 +126,9 @@ const ProgressWorkflow = (props) => {
             {currentState.title}
           </div>
         </>
-      ) : null}
+      ) : (
+        <></>
+      )}
     </Portal>
   );
 };
