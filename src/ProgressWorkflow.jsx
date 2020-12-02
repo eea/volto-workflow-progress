@@ -21,24 +21,25 @@ const ProgressWorkflow = (props) => {
   const setVisibleSide = () => {
     setVisible(!visible);
   };
-  const findCurrentState = (steps, done) => {
-    const arrayContainingCurrentState = steps.find(
-      (itemElements) => itemElements[1] === done,
-    );
-    const indexOfCurrentSateKey = arrayContainingCurrentState[0].indexOf(
-      currentStateKey,
-    );
-    const title = arrayContainingCurrentState[2][indexOfCurrentSateKey];
-    const description = arrayContainingCurrentState[3][indexOfCurrentSateKey];
-
-    setCurrentState({
-      done,
-      title,
-      description,
-    });
-  };
 
   useEffect(() => {
+    const findCurrentState = (steps, done) => {
+      const arrayContainingCurrentState = steps.find(
+        (itemElements) => itemElements[1] === done,
+      );
+      const indexOfCurrentSateKey = arrayContainingCurrentState[0].indexOf(
+        currentStateKey,
+      );
+      const title = arrayContainingCurrentState[2][indexOfCurrentSateKey];
+      const description = arrayContainingCurrentState[3][indexOfCurrentSateKey];
+
+      setCurrentState({
+        done,
+        title,
+        description,
+      });
+    };
+
     // filter out paths that don't have workflow (home, login etc)
     if (
       workflowProgress.result &&
@@ -53,7 +54,7 @@ const ProgressWorkflow = (props) => {
       setCurrentState(null); // reset current state only if a path without workflow is
       // chosen to avoid flicker for those that have workflow
     }
-  }, [workflowProgress]);
+  }, [currentStateKey, workflowProgress]);
 
   useEffect(() => {
     dispatch(getWorkflowProgress(pathname)); // the are paths that don't have workflow (home, login etc)
