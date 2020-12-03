@@ -67,6 +67,7 @@ const ProgressWorkflow = (props) => {
 
   const itemTracker = (tracker) => (
     <li
+      key={`progress__item ${tracker[0]}`}
       className={`progress__item ${
         tracker[0].indexOf(currentStateKey) > -1
           ? 'progress__item--active'
@@ -75,8 +76,9 @@ const ProgressWorkflow = (props) => {
           : 'progress__item--next'
       }`}
     >
-      {tracker[2].map((title) => (
+      {tracker[2].map((title, index) => (
         <p
+          key={`progress__title ${tracker[0]}${index}`}
           className={`progress__title ${
             currentState.title !== title ? 'title-incomplete' : ''
           }`}
