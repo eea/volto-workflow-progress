@@ -13,9 +13,11 @@ const ProgressWorkflow = (props) => {
   const dispatch = useDispatch();
 
   const [visible, setVisible] = useState(false);
+  const [isToolbarOpen, setIsToolbarOpen] = useState(false);
   const [workflowProgressSteps, setWorkflowProgressSteps] = useState([]);
   const [currentState, setCurrentState] = useState(null);
   const workflowProgress = useSelector((state) => state?.workflowProgress);
+  const thestate = useSelector((state) => state);
 
   // toggle progress component visible by clicking on the button
   const setVisibleSide = () => {
@@ -39,7 +41,9 @@ const ProgressWorkflow = (props) => {
         description,
       });
     };
+    const hasToolbar = document.querySelector('#toolbar .toolbar-actions');
 
+    setIsToolbarOpen(!!hasToolbar);
     // filter out paths that don't have workflow (home, login etc)
     if (
       workflowProgress.result &&
@@ -89,47 +93,49 @@ const ProgressWorkflow = (props) => {
   };
 
   return (
-    <Portal
-      node={__CLIENT__ && document.querySelector('#toolbar .toolbar-actions')}
-    >
-      {currentState ? (
-        <>
-          <div>
-            <button
-              className={`circle-right-btn ${
+    isToolbarOpen && (
+      <Portal
+        node={__CLIENT__ && document.querySelector('#toolbar .toolbar-actions')}
+      >
+        {currentState ? (
+          <>
+            <div>
+              <button
+                className={`circle-right-btn ${
+                  currentStateClass[currentStateKey]
+                    ? `review-state-${currentStateKey}`
+                    : ''
+                }`}
+                id="toolbar-cut-blocks"
+                onClick={setVisibleSide}
+              >
+                {`${currentState.done}%`}
+              </button>
+              {visible ? (
+                <div className="sidenav-ol">
+                  <ul className="progress">
+                    {workflowProgressSteps.map((progressItem) =>
+                      itemTracker(progressItem),
+                    )}
+                  </ul>
+                </div>
+              ) : null}
+            </div>
+            <div
+              className={`review-state-text ${
                 currentStateClass[currentStateKey]
                   ? `review-state-${currentStateKey}`
                   : ''
               }`}
-              id="toolbar-cut-blocks"
-              onClick={setVisibleSide}
             >
-              {`${currentState.done}%`}
-            </button>
-            {visible ? (
-              <div className="sidenav-ol">
-                <ul className="progress">
-                  {workflowProgressSteps.map((progressItem) =>
-                    itemTracker(progressItem),
-                  )}
-                </ul>
-              </div>
-            ) : null}
-          </div>
-          <div
-            className={`review-state-text ${
-              currentStateClass[currentStateKey]
-                ? `review-state-${currentStateKey}`
-                : ''
-            }`}
-          >
-            {currentState.title}
-          </div>
-        </>
-      ) : (
-        <></>
-      )}
-    </Portal>
+              {currentState.title}
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+      </Portal>
+    )
   );
 };
 export default ProgressWorkflow;
