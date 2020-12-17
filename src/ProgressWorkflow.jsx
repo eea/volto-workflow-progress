@@ -17,7 +17,6 @@ const ProgressWorkflow = (props) => {
   const [workflowProgressSteps, setWorkflowProgressSteps] = useState([]);
   const [currentState, setCurrentState] = useState(null);
   const workflowProgress = useSelector((state) => state?.workflowProgress);
-  const thestate = useSelector((state) => state);
 
   // toggle progress component visible by clicking on the button
   const setVisibleSide = () => {
@@ -63,7 +62,7 @@ const ProgressWorkflow = (props) => {
 
   useEffect(() => {
     dispatch(getWorkflowProgress(pathname)); // the are paths that don't have workflow (home, login etc)
-  }, [dispatch, pathname]);
+  }, [dispatch, pathname, content]);
 
   const itemTracker = (tracker) => (
     <li
@@ -106,6 +105,8 @@ const ProgressWorkflow = (props) => {
                 className={`circle-right-btn ${
                   currentStateClass[currentStateKey]
                     ? `review-state-${currentStateKey}`
+                    : currentState.done === 100
+                    ? 'review-state-published'
                     : ''
                 }`}
                 id="toolbar-cut-blocks"
@@ -127,6 +128,8 @@ const ProgressWorkflow = (props) => {
               className={`review-state-text ${
                 currentStateClass[currentStateKey]
                   ? `review-state-${currentStateKey}`
+                  : currentState.done === 100
+                  ? 'review-state-published'
                   : ''
               }`}
             >
