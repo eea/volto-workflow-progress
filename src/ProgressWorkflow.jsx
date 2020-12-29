@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { Portal } from 'react-portal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -143,4 +144,10 @@ const ProgressWorkflow = (props) => {
     )
   );
 };
+
+ProgressWorkflow.propTypes = {
+  pathname: PropTypes.string.isRequired,
+  content: PropTypes.object,
+};
+
 export default ProgressWorkflow;
