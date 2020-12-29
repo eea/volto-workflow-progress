@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/volto-workflow-progress",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "volto-workflow-progress: Volto add-on",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
@@ -16,8 +16,7 @@
     "type": "git",
     "url": "git@github.com:eea/volto-workflow-progress.git"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "scripts": {
     "release": "release-it",
     "bootstrap": "node bootstrap",
