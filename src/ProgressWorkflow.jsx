@@ -46,9 +46,9 @@ const ProgressWorkflow = (props) => {
     setIsToolbarOpen(!!hasToolbar);
     // filter out paths that don't have workflow (home, login etc)
     if (
-      workflowProgress.result &&
+      workflowProgress?.result &&
       !workflowProgress.workflow?.error &&
-      Array.isArray(workflowProgress.result.steps)
+      Array.isArray(workflowProgress?.result?.steps)
     ) {
       findCurrentState(
         workflowProgress.result.steps,
