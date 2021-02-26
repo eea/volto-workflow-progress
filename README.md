@@ -31,7 +31,7 @@ Demo GIF
    ],
 
    "dependencies": {
-       "@eeacms/volto-workflow-progress": "^1.0.0"
+       "@eeacms/volto-workflow-progress": "^2.0.0"
    }
    ```
 
