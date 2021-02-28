@@ -59,7 +59,7 @@ const ProgressWorkflow = (props) => {
       setCurrentState(null); // reset current state only if a path without workflow is
       // chosen to avoid flicker for those that have workflow
     }
-  }, [currentStateKey, workflowProgress]);
+  }, [currentStateKey, workflowProgress]); // eslint-disable-line
 
   useEffect(() => {
     dispatch(getWorkflowProgress(pathname)); // the are paths that don't have workflow (home, login etc)
