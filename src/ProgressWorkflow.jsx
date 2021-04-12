@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Portal } from 'react-portal';
 import { useDispatch, useSelector } from 'react-redux';
+import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
 import { getWorkflowProgress } from './actions';
 import './less/editor.less';
 
@@ -18,9 +19,14 @@ const ProgressWorkflow = (props) => {
   const [workflowProgressSteps, setWorkflowProgressSteps] = useState([]);
   const [currentState, setCurrentState] = useState(null);
   const workflowProgress = useSelector((state) => state?.workflowProgress);
+  const pusherRef = useRef(null);
 
-  // toggle progress component visible by clicking on the button
-  const setVisibleSide = () => {
+  // set visible by clicking oustisde
+  const setVisibleSide = (isVisible) => {
+    setVisible(isVisible);
+  };
+  // toggle visible by clicking on the button
+  const toggleVisibleSide = () => {
     setVisible(!visible);
   };
 
@@ -65,6 +71,18 @@ const ProgressWorkflow = (props) => {
     dispatch(getWorkflowProgress(pathname)); // the are paths that don't have workflow (home, login etc)
   }, [dispatch, pathname, content]);
 
+  // on mount subscribe to mousedown to be able to close on click outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (pusherRef.current && doesNodeContainClick(pusherRef.current, e))
+        return;
+
+      setVisibleSide(false);
+    };
+
+    document.addEventListener('mousedown', handleClickOutside, false);
+  }, []);
+
   const itemTracker = (tracker) => (
     <li
       key={`progress__item ${tracker[0]}`}
@@ -101,7 +119,7 @@ const ProgressWorkflow = (props) => {
       >
         {currentState ? (
           <>
-            <div>
+            <div ref={pusherRef}>
               <button
                 className={`circle-right-btn ${
                   currentStateClass[currentStateKey]
@@ -111,7 +129,7 @@ const ProgressWorkflow = (props) => {
                     : ''
                 }`}
                 id="toolbar-cut-blocks"
-                onClick={setVisibleSide}
+                onClick={toggleVisibleSide}
               >
                 {`${currentState.done}%`}
               </button>

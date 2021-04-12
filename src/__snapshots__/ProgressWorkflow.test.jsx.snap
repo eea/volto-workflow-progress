@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProgressWorkflow renders the ProgressWorkflow component 1`] = `null`;
+
+exports[`ProgressWorkflow renders the ProgressWorkflow component with Percent showing correct value 1`] = `null`;
+
+exports[`ProgressWorkflow renders the ProgressWorkflow component without breaking if props and workflow are empty 1`] = `null`;
