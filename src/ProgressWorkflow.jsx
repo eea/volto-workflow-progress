@@ -49,6 +49,26 @@ const ProgressWorkflow = (props) => {
     };
     const hasToolbar = document.querySelector('#toolbar .toolbar-actions');
 
+    const filterOutZeroStatesNotCurrent = (states) => {
+      const firstFilter = states.filter(
+        (state) => state[1] > 0 || state[0].indexOf(currentStateKey) > -1,
+      );
+      const result = firstFilter.map((state) => {
+        const percent = state[1];
+        if (percent === 0) {
+          const indexOfCurrentSateKey = state[0].indexOf(currentStateKey);
+          const keys = [state[0][indexOfCurrentSateKey]];
+          const titles = [state[3][indexOfCurrentSateKey]];
+          const nextState = [state[2][indexOfCurrentSateKey]];
+          console.log({ indexOfCurrentSateKey });
+          console.log([keys, percent, nextState, titles]);
+          return [keys, percent, nextState, titles];
+        }
+        return state;
+      });
+      return result;
+    };
+
     setIsToolbarOpen(!!hasToolbar);
     // filter out paths that don't have workflow (home, login etc)
     if (
@@ -60,7 +80,9 @@ const ProgressWorkflow = (props) => {
         workflowProgress.result.steps,
         workflowProgress.result.done,
       );
-      setWorkflowProgressSteps(workflowProgress.result.steps);
+      setWorkflowProgressSteps(
+        filterOutZeroStatesNotCurrent(workflowProgress.result.steps),
+      );
     } else {
       setCurrentState(null); // reset current state only if a path without workflow is
       // chosen to avoid flicker for those that have workflow
