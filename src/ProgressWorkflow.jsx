@@ -69,6 +69,7 @@ const ProgressWorkflow = (props) => {
     };
 
     setIsToolbarOpen(!!hasToolbar);
+
     // filter out paths that don't have workflow (home, login, dexterity even if the content obj stays the same etc)
     if (
       content['@id'].indexOf(pathname) >= 0 &&
