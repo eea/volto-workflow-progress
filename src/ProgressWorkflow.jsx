@@ -59,8 +59,8 @@ const ProgressWorkflow = (props) => {
           const keys = [state[0][indexOfCurrentSateKey]];
           const titles = [state[3][indexOfCurrentSateKey]];
           const nextState = [state[2][indexOfCurrentSateKey]];
-          console.log({ indexOfCurrentSateKey });
-          console.log([keys, percent, nextState, titles]);
+          // console.log({ indexOfCurrentSateKey });
+          // console.log([keys, percent, nextState, titles]);
           return [keys, percent, nextState, titles];
         }
         return state;
