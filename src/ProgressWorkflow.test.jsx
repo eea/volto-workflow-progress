@@ -14,9 +14,11 @@ import ProgressWorkflow from './ProgressWorkflow';
 
 const mockStore = configureStore();
 const props = {
-  content: { review_state: 'pending' },
+  content: {
+    '@id': 'http://localhost:3000/api/',
+    review_state: 'pending',
+  },
   pathname: '/',
-  '@id': 'http://localhost:3000/api/',
 };
 const propsEmpty = {};
 
