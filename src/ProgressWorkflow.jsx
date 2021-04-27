@@ -12,8 +12,8 @@ import './less/editor.less';
 const ProgressWorkflow = (props) => {
   const { content, pathname } = props;
   const currentStateKey = content?.review_state;
+  const contentId = content?.['@id'] || '';
   const dispatch = useDispatch();
-
   const [visible, setVisible] = useState(false);
   const [isToolbarOpen, setIsToolbarOpen] = useState(false);
   const [workflowProgressSteps, setWorkflowProgressSteps] = useState([]);
@@ -60,8 +60,7 @@ const ProgressWorkflow = (props) => {
           const keys = [state[0][indexOfCurrentSateKey]];
           const titles = [state[3][indexOfCurrentSateKey]];
           const nextState = [state[2][indexOfCurrentSateKey]];
-          // console.log({ indexOfCurrentSateKey });
-          // console.log([keys, percent, nextState, titles]);
+
           return [keys, percent, nextState, titles];
         }
         return state;
@@ -70,8 +69,11 @@ const ProgressWorkflow = (props) => {
     };
 
     setIsToolbarOpen(!!hasToolbar);
-    // filter out paths that don't have workflow (home, login etc)
+
+    // filter out paths that don't have workflow (home, login, dexterity even if the content obj stays the same etc)
     if (
+      contentId.indexOf(pathname) >= 0 &&
+      pathname !== '/' && // wihout this there will be a flicker for going back to home ('/' in included in all api paths)
       workflowProgress?.result &&
       !workflowProgress.workflow?.error &&
       Array.isArray(workflowProgress?.result?.steps)
@@ -87,11 +89,11 @@ const ProgressWorkflow = (props) => {
       setCurrentState(null); // reset current state only if a path without workflow is
       // chosen to avoid flicker for those that have workflow
     }
-  }, [currentStateKey, workflowProgress]); // eslint-disable-line
+  }, [workflowProgress?.result]); // eslint-disable-line
 
   useEffect(() => {
-    dispatch(getWorkflowProgress(pathname)); // the are paths that don't have workflow (home, login etc)
-  }, [dispatch, pathname, content]);
+    dispatch(getWorkflowProgress(contentId)); // the are paths that don't have workflow (home, login etc)
+  }, [dispatch, pathname, contentId]);
 
   // on mount subscribe to mousedown to be able to close on click outside
   useEffect(() => {

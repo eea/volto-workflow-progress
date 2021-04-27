@@ -13,7 +13,13 @@ import configureStore from 'redux-mock-store';
 import ProgressWorkflow from './ProgressWorkflow';
 
 const mockStore = configureStore();
-const props = { content: { review_state: 'pending' }, pathname: '/' };
+const props = {
+  content: {
+    '@id': 'http://localhost:3000/api/',
+    review_state: 'pending',
+  },
+  pathname: '/',
+};
 const propsEmpty = {};
 
 describe('ProgressWorkflow', () => {
