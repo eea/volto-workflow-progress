@@ -12,6 +12,7 @@ import './less/editor.less';
 const ProgressWorkflow = (props) => {
   const { content, pathname } = props;
   const currentStateKey = content?.review_state;
+  const contentId = content?.['@id'] || '';
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [isToolbarOpen, setIsToolbarOpen] = useState(false);
@@ -71,7 +72,7 @@ const ProgressWorkflow = (props) => {
 
     // filter out paths that don't have workflow (home, login, dexterity even if the content obj stays the same etc)
     if (
-      content['@id'].indexOf(pathname) >= 0 &&
+      contentId.indexOf(pathname) >= 0 &&
       pathname !== '/' && // wihout this there will be a flicker for going back to home ('/' in included in all api paths)
       workflowProgress?.result &&
       !workflowProgress.workflow?.error &&
@@ -91,8 +92,8 @@ const ProgressWorkflow = (props) => {
   }, [workflowProgress?.result]); // eslint-disable-line
 
   useEffect(() => {
-    dispatch(getWorkflowProgress(content['@id'])); // the are paths that don't have workflow (home, login etc)
-  }, [dispatch, pathname, content]);
+    dispatch(getWorkflowProgress(contentId)); // the are paths that don't have workflow (home, login etc)
+  }, [dispatch, pathname, contentId]);
 
   // on mount subscribe to mousedown to be able to close on click outside
   useEffect(() => {
