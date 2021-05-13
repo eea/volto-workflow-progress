@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
 import { getWorkflowProgress } from './actions';
 import './less/editor.less';
+import { Pluggable } from '@plone/volto/components/manage/Pluggable';
 
 /**
  * @summary The React component that shows progress tracking of selected content.
@@ -107,29 +108,40 @@ const ProgressWorkflow = (props) => {
     document.addEventListener('mousedown', handleClickOutside, false);
   }, []);
 
-  const itemTracker = (tracker) => (
-    <li
-      key={`progress__item ${tracker[0]}`}
-      className={`progress__item ${
-        tracker[0].indexOf(currentStateKey) > -1
-          ? 'progress__item--active'
-          : tracker[1] < currentState.done
-          ? 'progress__item--completed'
-          : 'progress__item--next'
-      }`}
-    >
-      {tracker[2].map((title, index) => (
-        <p
-          key={`progress__title ${tracker[0]}${index}`}
-          className={`progress__title ${
-            currentState.title !== title ? 'title-incomplete' : ''
-          }`}
-        >
-          {title}
-        </p>
-      ))}
-    </li>
-  );
+  const itemTracker = (tracker) => {
+    const tracker_key_array = tracker[0];
+    const is_active = tracker_key_array.indexOf(currentStateKey) > -1;
+    const pluggable_params = { id: tracker_key_array[0] };
+    return (
+      <li
+        key={`progress__item ${tracker_key_array}`}
+        className={`progress__item ${
+          is_active
+            ? 'progress__item--active'
+            : tracker[1] < currentState.done
+            ? 'progress__item--completed'
+            : 'progress__item--next'
+        }`}
+      >
+        {tracker[2].map((title, index) => (
+          <p
+            key={`progress__title ${tracker_key_array}${index}`}
+            className={`progress__title ${
+              currentState.title !== title ? 'title-incomplete' : ''
+            }`}
+          >
+            {title}
+            {is_active && (
+              <Pluggable
+                name="active-workflow-progress"
+                params={pluggable_params}
+              />
+            )}
+          </p>
+        ))}
+      </li>
+    );
+  };
 
   const currentStateClass = {
     published: 'published',
