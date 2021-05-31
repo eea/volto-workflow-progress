@@ -7,6 +7,8 @@ import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
 import { getWorkflowProgress } from './actions';
 import './less/editor.less';
 
+import { getBaseUrl } from '@plone/volto/helpers';
+
 /**
  * @summary The React component that shows progress tracking of selected content.
  */
@@ -14,6 +16,7 @@ const ProgressWorkflow = (props) => {
   const { content, pathname } = props;
   const currentStateKey = content?.review_state;
   const dispatch = useDispatch();
+  const basePathname = getBaseUrl(pathname);
   const [visible, setVisible] = useState(false);
   const [isToolbarOpen, setIsToolbarOpen] = useState(false);
   const [workflowProgressSteps, setWorkflowProgressSteps] = useState([]);
@@ -37,11 +40,12 @@ const ProgressWorkflow = (props) => {
       const arrayContainingCurrentState = steps.find(
         (itemElements) => itemElements[1] === done,
       );
-      const indexOfCurrentSateKey = arrayContainingCurrentState[0].indexOf(
+      const indexOfCurrentStateKey = arrayContainingCurrentState[0].indexOf(
         currentStateKey,
       );
-      const title = arrayContainingCurrentState[2][indexOfCurrentSateKey];
-      const description = arrayContainingCurrentState[3][indexOfCurrentSateKey];
+      const title = arrayContainingCurrentState[2][indexOfCurrentStateKey];
+      const description =
+        arrayContainingCurrentState[3][indexOfCurrentStateKey];
 
       setCurrentState({
         done,
@@ -68,13 +72,13 @@ const ProgressWorkflow = (props) => {
           ? states // return all states
           : (() => {
               // there are 0% states
-              const indexOfCurrentSateKey = firstState[0].indexOf(
+              const indexOfCurrentStateKey = firstState[0].indexOf(
                 currentStateKey,
               );
-              if (indexOfCurrentSateKey > -1) {
-                const keys = [firstState[0][indexOfCurrentSateKey]];
-                const titles = [firstState[2][indexOfCurrentSateKey]];
-                const description = [firstState[3][indexOfCurrentSateKey]];
+              if (indexOfCurrentStateKey > -1) {
+                const keys = [firstState[0][indexOfCurrentStateKey]];
+                const titles = [firstState[2][indexOfCurrentStateKey]];
+                const description = [firstState[3][indexOfCurrentStateKey]];
 
                 return [[keys, 0, titles, description], ...rest]; // return only the current 0% state and test
               }
@@ -90,8 +94,8 @@ const ProgressWorkflow = (props) => {
     // filter out paths that don't have workflow (home, login, dexterity even if the content obj stays the same etc)
     if (
       contentId &&
-      contentId.indexOf(pathname) >= 0 &&
-      pathname !== '/' && // wihout this there will be a flicker for going back to home ('/' in included in all api paths)
+      contentId.indexOf(basePathname) >= 0 &&
+      basePathname !== '/' && // wihout this there will be a flicker for going back to home ('/' in included in all api paths)
       workflowProgress?.result &&
       !workflowProgress.workflow?.error &&
       Array.isArray(workflowProgress?.result?.steps)
@@ -107,16 +111,14 @@ const ProgressWorkflow = (props) => {
       setCurrentState(null); // reset current state only if a path without workflow is
       // chosen to avoid flicker for those that have workflow
     }
-  }, [workflowProgress?.result]); // eslint-disable-line
+  }, [workflowProgress?.result, currentStateKey]); // eslint-disable-line
 
   // get progress again if path or content changes
   useEffect(() => {
-    const contentId = content?.['@id'];
-
-    if (contentId && token) {
-      dispatch(getWorkflowProgress(contentId));
+    if (token) {
+      dispatch(getWorkflowProgress(basePathname));
     } // the are paths that don't have workflow (home, login etc) only if logged in
-  }, [dispatch, pathname, content, token]);
+  }, [dispatch, pathname, basePathname, token, currentStateKey]);
 
   // on mount subscribe to mousedown to be able to close on click outside
   useEffect(() => {
@@ -192,15 +194,13 @@ const ProgressWorkflow = (props) => {
               >
                 {`${currentState.done}%`}
               </button>
-              {visible ? (
-                <div className="sidenav-ol">
-                  <ul className="progress">
-                    {workflowProgressSteps.map((progressItem) =>
-                      itemTracker(progressItem),
-                    )}
-                  </ul>
-                </div>
-              ) : null}
+              <div className={`sidenav-ol ${!visible ? `is-hidden` : ''}`}>
+                <ul className="progress">
+                  {workflowProgressSteps.map((progressItem) =>
+                    itemTracker(progressItem),
+                  )}
+                </ul>
+              </div>
             </div>
             <div
               className={`review-state-text ${
