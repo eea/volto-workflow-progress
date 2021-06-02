@@ -54,8 +54,8 @@
   position: relative;
   padding: 0 1rem 0 3.5rem;
   margin: 2rem 0 0;
+  counter-reset: item;
   list-style: none;
-	counter-reset: item;
 }
 
 .review-state-text {
@@ -83,7 +83,7 @@
   position: relative;
   min-height: 75px;
   padding-left: 0.5rem;
-	counter-increment: item -1;
+  counter-increment: item -1;
 
   &:before {
     position: absolute;
@@ -105,7 +105,7 @@
     background: @progress-indicator-color;
     border-radius: 50%;
     color: white;
-		content: counter(item);
+    content: counter(item);
     font-size: 13px;
     font-weight: 400;
     line-height: 1.5rem;
