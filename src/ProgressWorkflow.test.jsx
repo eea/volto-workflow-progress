@@ -1,5 +1,4 @@
 // ✓ ca nu crapa la obiect gol
-// ca nu crapa fara procent
 // daca vine cum trebuie vedem procent, titlu, sidebar progress tracker
 // ca nu face nimic daca nu e pe ce ruta trebuie
 // ca nu face nimic daca nu e logat userul
