@@ -1,4 +1,5 @@
 import { Pluggable } from '@plone/volto/components/manage/Pluggable';
+import { getBaseUrl } from '@plone/volto/helpers';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { Portal } from 'react-portal';
@@ -6,8 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
 import { getWorkflowProgress } from './actions';
 import './less/editor.less';
-
-import { getBaseUrl } from '@plone/volto/helpers';
 
 /**
  * @summary The React component that shows progress tracking of selected content.
@@ -95,8 +94,9 @@ const ProgressWorkflow = (props) => {
     if (
       contentId &&
       contentId.indexOf(basePathname) >= 0 &&
-      basePathname !== '/' && // wihout this there will be a flicker for going back to home ('/' in included in all api paths)
-      workflowProgress?.result &&
+      basePathname !== '/' && // wihout this there will be a flicker for going back to home ('/' is included in all api paths)
+      workflowProgress?.result?.steps &&
+      workflowProgress.result.steps.length > 0 &&
       !workflowProgress.workflow?.error &&
       Array.isArray(workflowProgress?.result?.steps)
     ) {
