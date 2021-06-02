@@ -15,7 +15,12 @@ const ProgressWorkflow = (props) => {
   const { content, pathname } = props;
   const currentStateKey = content?.review_state;
   const dispatch = useDispatch();
+  const contentId = content?.['@id'];
   const basePathname = getBaseUrl(pathname);
+  const samePathname = contentId && contentId.endsWith(basePathname);
+  const fetchCondition = pathname.endsWith('/contents')
+    ? pathname === basePathname + '/contents'
+    : pathname === basePathname;
   const [visible, setVisible] = useState(false);
   const [isToolbarOpen, setIsToolbarOpen] = useState(false);
   const [workflowProgressSteps, setWorkflowProgressSteps] = useState([]);
@@ -88,12 +93,11 @@ const ProgressWorkflow = (props) => {
     };
 
     setIsToolbarOpen(!!hasToolbar);
-    const contentId = content?.['@id'];
 
     // filter out paths that don't have workflow (home, login, dexterity even if the content obj stays the same etc)
     if (
       contentId &&
-      contentId.indexOf(basePathname) >= 0 &&
+      samePathname &&
       basePathname !== '/' && // wihout this there will be a flicker for going back to home ('/' is included in all api paths)
       workflowProgress?.result?.steps &&
       workflowProgress.result.steps.length > 0 &&
@@ -111,14 +115,22 @@ const ProgressWorkflow = (props) => {
       setCurrentState(null); // reset current state only if a path without workflow is
       // chosen to avoid flicker for those that have workflow
     }
-  }, [workflowProgress?.result, currentStateKey]); // eslint-disable-line
+  }, [workflowProgress?.result, currentStateKey, pathname]); // eslint-disable-line
 
   // get progress again if path or content changes
   useEffect(() => {
-    if (token) {
+    if (token && fetchCondition && samePathname) {
       dispatch(getWorkflowProgress(basePathname));
     } // the are paths that don't have workflow (home, login etc) only if logged in
-  }, [dispatch, pathname, basePathname, token, currentStateKey]);
+  }, [
+    dispatch,
+    pathname,
+    basePathname,
+    token,
+    currentStateKey,
+    samePathname,
+    fetchCondition,
+  ]);
 
   // on mount subscribe to mousedown to be able to close on click outside
   useEffect(() => {
