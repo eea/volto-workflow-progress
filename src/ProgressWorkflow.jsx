@@ -105,7 +105,7 @@ const ProgressWorkflow = (props) => {
         workflowProgress.result.done,
       );
       setWorkflowProgressSteps(
-        filterOutZeroStatesNotCurrent(workflowProgress.result.steps),
+        filterOutZeroStatesNotCurrent(workflowProgress.result.steps).reverse(),
       );
     } else {
       setCurrentState(null); // reset current state only if a path without workflow is
@@ -195,11 +195,16 @@ const ProgressWorkflow = (props) => {
                 {`${currentState.done}%`}
               </button>
               <div className={`sidenav-ol ${!visible ? `is-hidden` : ''}`}>
-                <ul className="progress">
+                <ol
+                  className="progress-reversed"
+                  style={{
+                    counterReset: `item ${workflowProgressSteps.length + 1}`,
+                  }}
+                >
                   {workflowProgressSteps.map((progressItem) =>
                     itemTracker(progressItem),
                   )}
-                </ul>
+                </ol>
               </div>
             </div>
             <div
