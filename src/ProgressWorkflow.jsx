@@ -17,11 +17,10 @@ const ProgressWorkflow = (props) => {
   const dispatch = useDispatch();
   const contentId = content?.['@id'];
   const basePathname = getBaseUrl(pathname);
-  const samePathname = contentId && contentId.endsWith(basePathname);
+  const contentContainsPathname = contentId && contentId.endsWith(basePathname);
   const fetchCondition = pathname.endsWith('/contents')
     ? pathname === basePathname + '/contents'
     : pathname === basePathname;
-  const [visible, setVisible] = useState(false);
   const [isToolbarOpen, setIsToolbarOpen] = useState(false);
   const [workflowProgressSteps, setWorkflowProgressSteps] = useState([]);
   const [currentState, setCurrentState] = useState(null);
@@ -30,12 +29,14 @@ const ProgressWorkflow = (props) => {
   const pusherRef = useRef(null);
 
   // set visible by clicking oustisde
-  const setVisibleSide = (isVisible) => {
-    setVisible(isVisible);
+  const hideVisibleSide = () => {
+    pusherRef.current &&
+      pusherRef.current.lastElementChild.classList.add('is-hidden');
   };
   // toggle visible by clicking on the button
   const toggleVisibleSide = () => {
-    setVisible(!visible);
+    pusherRef.current &&
+      pusherRef.current.lastElementChild.classList.toggle('is-hidden');
   };
 
   // apply all computing when the workflowProgress results come from the api
@@ -97,7 +98,7 @@ const ProgressWorkflow = (props) => {
     // filter out paths that don't have workflow (home, login, dexterity even if the content obj stays the same etc)
     if (
       contentId &&
-      samePathname &&
+      contentContainsPathname &&
       basePathname !== '/' && // wihout this there will be a flicker for going back to home ('/' is included in all api paths)
       workflowProgress?.result?.steps &&
       workflowProgress.result.steps.length > 0 &&
@@ -119,7 +120,7 @@ const ProgressWorkflow = (props) => {
 
   // get progress again if path or content changes
   useEffect(() => {
-    if (token && fetchCondition && samePathname) {
+    if (token && fetchCondition && contentContainsPathname) {
       dispatch(getWorkflowProgress(basePathname));
     } // the are paths that don't have workflow (home, login etc) only if logged in
   }, [
@@ -128,17 +129,22 @@ const ProgressWorkflow = (props) => {
     basePathname,
     token,
     currentStateKey,
-    samePathname,
+    contentContainsPathname,
     fetchCondition,
   ]);
 
   // on mount subscribe to mousedown to be able to close on click outside
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (pusherRef.current && doesNodeContainClick(pusherRef.current, e))
-        return;
-
-      setVisibleSide(false);
+      const parentDiv = pusherRef.current;
+      if (parentDiv) {
+        if (
+          !doesNodeContainClick(parentDiv, e) &&
+          !parentDiv.lastElementChild.classList.contains('is-hidden')
+        ) {
+          hideVisibleSide();
+        }
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside, false);
@@ -206,7 +212,7 @@ const ProgressWorkflow = (props) => {
               >
                 {`${currentState.done}%`}
               </button>
-              <div className={`sidenav-ol ${!visible ? `is-hidden` : ''}`}>
+              <div className={`sidenav-ol is-hidden`}>
                 <ol
                   className="progress-reversed"
                   style={{
