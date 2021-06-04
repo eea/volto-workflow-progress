@@ -99,6 +99,7 @@ const ProgressWorkflow = (props) => {
     if (
       contentId &&
       contentContainsPathname &&
+      basePathname &&
       basePathname !== '/' && // wihout this there will be a flicker for going back to home ('/' is included in all api paths)
       workflowProgress?.result?.steps &&
       workflowProgress.result.steps.length > 0 &&
