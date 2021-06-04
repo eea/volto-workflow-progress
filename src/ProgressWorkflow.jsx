@@ -18,14 +18,26 @@ const ProgressWorkflow = (props) => {
   const contentId = content?.['@id'];
   const basePathname = getBaseUrl(pathname);
   const contentContainsPathname = contentId && contentId.endsWith(basePathname);
-  const fetchCondition = pathname.endsWith('/contents')
-    ? pathname === basePathname + '/contents'
-    : pathname === basePathname;
+  const fetchCondition =
+    pathname.endsWith('/contents') ||
+    pathname.endsWith('/edit') ||
+    pathname === basePathname;
   const [isToolbarOpen, setIsToolbarOpen] = useState(false);
   const [workflowProgressSteps, setWorkflowProgressSteps] = useState([]);
   const [currentState, setCurrentState] = useState(null);
   const token = useSelector((state) => state?.userSession?.token);
-  const workflowProgress = useSelector((state) => state?.workflowProgress);
+  const workflowProgress = useSelector((state) => {
+    if (state?.workflowProgress?.workflow?.loaded === true) {
+      const progress = state?.workflowProgress?.result;
+      if (
+        progress &&
+        progress['@id'].endsWith(basePathname + '/@workflow.progress')
+      ) {
+        return state?.workflowProgress;
+      }
+    }
+    return null;
+  });
   const pusherRef = useRef(null);
 
   // set visible by clicking oustisde
@@ -114,8 +126,13 @@ const ProgressWorkflow = (props) => {
         filterOutZeroStatesNotCurrent(workflowProgress.result.steps).reverse(),
       );
     } else {
-      setCurrentState(null); // reset current state only if a path without workflow is
-      // chosen to avoid flicker for those that have workflow
+      if (workflowProgressSteps.length) {
+        setWorkflowProgressSteps([]);
+      }
+      if (currentState) {
+        setCurrentState(null); // reset current state only if a path without workflow is
+        // chosen to avoid flicker for those that have workflow
+      }
     }
   }, [workflowProgress?.result, currentStateKey, pathname]); // eslint-disable-line
 
@@ -197,7 +214,7 @@ const ProgressWorkflow = (props) => {
       <Portal
         node={__CLIENT__ && document.querySelector('#toolbar .toolbar-actions')}
       >
-        {currentState ? (
+        {currentState && contentContainsPathname ? (
           <>
             <div ref={pusherRef}>
               <button
