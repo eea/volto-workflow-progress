@@ -15,8 +15,12 @@ const ProgressWorkflow = (props) => {
   const { content, pathname } = props;
   const currentStateKey = content?.review_state;
   const dispatch = useDispatch();
+  const contentId = content?.['@id'];
   const basePathname = getBaseUrl(pathname);
-  const [visible, setVisible] = useState(false);
+  const contentContainsPathname = contentId && contentId.endsWith(basePathname);
+  const fetchCondition = pathname.endsWith('/contents')
+    ? pathname === basePathname + '/contents'
+    : pathname === basePathname;
   const [isToolbarOpen, setIsToolbarOpen] = useState(false);
   const [workflowProgressSteps, setWorkflowProgressSteps] = useState([]);
   const [currentState, setCurrentState] = useState(null);
@@ -25,12 +29,14 @@ const ProgressWorkflow = (props) => {
   const pusherRef = useRef(null);
 
   // set visible by clicking oustisde
-  const setVisibleSide = (isVisible) => {
-    setVisible(isVisible);
+  const hideVisibleSide = () => {
+    pusherRef.current &&
+      pusherRef.current.lastElementChild.classList.add('is-hidden');
   };
   // toggle visible by clicking on the button
   const toggleVisibleSide = () => {
-    setVisible(!visible);
+    pusherRef.current &&
+      pusherRef.current.lastElementChild.classList.toggle('is-hidden');
   };
 
   // apply all computing when the workflowProgress results come from the api
@@ -88,12 +94,12 @@ const ProgressWorkflow = (props) => {
     };
 
     setIsToolbarOpen(!!hasToolbar);
-    const contentId = content?.['@id'];
 
     // filter out paths that don't have workflow (home, login, dexterity even if the content obj stays the same etc)
     if (
       contentId &&
-      contentId.indexOf(basePathname) >= 0 &&
+      contentContainsPathname &&
+      basePathname &&
       basePathname !== '/' && // wihout this there will be a flicker for going back to home ('/' is included in all api paths)
       workflowProgress?.result?.steps &&
       workflowProgress.result.steps.length > 0 &&
@@ -105,28 +111,41 @@ const ProgressWorkflow = (props) => {
         workflowProgress.result.done,
       );
       setWorkflowProgressSteps(
-        filterOutZeroStatesNotCurrent(workflowProgress.result.steps),
+        filterOutZeroStatesNotCurrent(workflowProgress.result.steps).reverse(),
       );
     } else {
       setCurrentState(null); // reset current state only if a path without workflow is
       // chosen to avoid flicker for those that have workflow
     }
-  }, [workflowProgress?.result, currentStateKey]); // eslint-disable-line
+  }, [workflowProgress?.result, currentStateKey, pathname]); // eslint-disable-line
 
   // get progress again if path or content changes
   useEffect(() => {
-    if (token) {
+    if (token && fetchCondition && contentContainsPathname) {
       dispatch(getWorkflowProgress(basePathname));
     } // the are paths that don't have workflow (home, login etc) only if logged in
-  }, [dispatch, pathname, basePathname, token, currentStateKey]);
+  }, [
+    dispatch,
+    pathname,
+    basePathname,
+    token,
+    currentStateKey,
+    contentContainsPathname,
+    fetchCondition,
+  ]);
 
   // on mount subscribe to mousedown to be able to close on click outside
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (pusherRef.current && doesNodeContainClick(pusherRef.current, e))
-        return;
-
-      setVisibleSide(false);
+      const parentDiv = pusherRef.current;
+      if (parentDiv) {
+        if (
+          !doesNodeContainClick(parentDiv, e) &&
+          !parentDiv.lastElementChild.classList.contains('is-hidden')
+        ) {
+          hideVisibleSide();
+        }
+      }
     };
 
     document.addEventListener('mousedown', handleClickOutside, false);
@@ -194,12 +213,17 @@ const ProgressWorkflow = (props) => {
               >
                 {`${currentState.done}%`}
               </button>
-              <div className={`sidenav-ol ${!visible ? `is-hidden` : ''}`}>
-                <ul className="progress">
+              <div className={`sidenav-ol is-hidden`}>
+                <ol
+                  className="progress-reversed"
+                  style={{
+                    counterReset: `item ${workflowProgressSteps.length + 1}`,
+                  }}
+                >
                   {workflowProgressSteps.map((progressItem) =>
                     itemTracker(progressItem),
                   )}
-                </ul>
+                </ol>
               </div>
             </div>
             <div
