@@ -8,6 +8,36 @@ import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
 import { getWorkflowProgress } from './actions';
 import './less/editor.less';
 
+const itemTracker = (tracker, currentStateKey, currentState) => {
+  const tracker_key_array = tracker[0];
+  const is_active = tracker_key_array.indexOf(currentStateKey) > -1;
+
+  return (
+    <li
+      key={`progress__item ${tracker_key_array}`}
+      className={`progress__item ${
+        is_active
+          ? 'progress__item--active'
+          : tracker[1] < currentState.done
+          ? 'progress__item--completed'
+          : 'progress__item--next'
+      }`}
+    >
+      {tracker[2].map((title, index) => (
+        <div
+          key={`progress__title ${tracker_key_array}${index}`}
+          className={`progress__title ${
+            currentState.title !== title ? 'title-incomplete' : ''
+          }`}
+        >
+          {title}
+          {is_active && <Pluggable name="active-workflow-progress" />}
+        </div>
+      ))}
+    </li>
+  );
+};
+
 /**
  * @summary The React component that shows progress tracking of selected content.
  */
@@ -17,7 +47,8 @@ const ProgressWorkflow = (props) => {
   const dispatch = useDispatch();
   const contentId = content?.['@id'];
   const basePathname = getBaseUrl(pathname);
-  const contentContainsPathname = contentId && contentId.endsWith(basePathname);
+  const contentContainsPathname =
+    contentId && basePathname && contentId.endsWith(basePathname);
   const fetchCondition =
     pathname.endsWith('/contents') ||
     pathname.endsWith('/edit') ||
@@ -126,9 +157,6 @@ const ProgressWorkflow = (props) => {
         filterOutZeroStatesNotCurrent(workflowProgress.result.steps).reverse(),
       );
     } else {
-      if (workflowProgressSteps.length) {
-        setWorkflowProgressSteps([]);
-      }
       if (currentState) {
         setCurrentState(null); // reset current state only if a path without workflow is
         // chosen to avoid flicker for those that have workflow
@@ -166,43 +194,11 @@ const ProgressWorkflow = (props) => {
     };
 
     document.addEventListener('mousedown', handleClickOutside, false);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
-
-  const itemTracker = (tracker) => {
-    const tracker_key_array = tracker[0];
-    const is_active = tracker_key_array.indexOf(currentStateKey) > -1;
-    const pluggable_params = { id: tracker_key_array[0] };
-
-    return (
-      <li
-        key={`progress__item ${tracker_key_array}`}
-        className={`progress__item ${
-          is_active
-            ? 'progress__item--active'
-            : tracker[1] < currentState.done
-            ? 'progress__item--completed'
-            : 'progress__item--next'
-        }`}
-      >
-        {tracker[2].map((title, index) => (
-          <p
-            key={`progress__title ${tracker_key_array}${index}`}
-            className={`progress__title ${
-              currentState.title !== title ? 'title-incomplete' : ''
-            }`}
-          >
-            {title}
-            {is_active && (
-              <Pluggable
-                name="active-workflow-progress"
-                params={pluggable_params}
-              />
-            )}
-          </p>
-        ))}
-      </li>
-    );
-  };
 
   const currentStateClass = {
     published: 'published',
@@ -238,7 +234,7 @@ const ProgressWorkflow = (props) => {
                   }}
                 >
                   {workflowProgressSteps.map((progressItem) =>
-                    itemTracker(progressItem),
+                    itemTracker(progressItem, currentStateKey, currentState),
                   )}
                 </ol>
               </div>
