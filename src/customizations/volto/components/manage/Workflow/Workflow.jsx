@@ -153,6 +153,14 @@ const customSelectStyles = {
   }),
 };
 
+/* #131062 use title instead of id if we find the current workflow id in the history props */
+const selectedWorkflow = (props, workflow_id) => {
+  const current_state = props.history.filter((value) => {
+    return value.review_state === props.content.review_state;
+  });
+  return (current_state.length && current_state[0]['title']) || workflow_id;
+};
+
 /**
  * Workflow container class.
  * @class Workflow
@@ -195,7 +203,10 @@ class Workflow extends Component {
 
   state = {
     selectedOption: this.props.content.review_state
-      ? getWorkflowMapping(null, this.props.content.review_state)
+      ? getWorkflowMapping(
+          this.props.content.review_state,
+          selectedWorkflow(this.props, this.props.content.review_state),
+        )
       : {},
   };
 
@@ -231,7 +242,7 @@ class Workflow extends Component {
     toast.success(
       <Toast
         success
-        title={this.props.intl.formatMessage(messages.messageUpdated)}
+        content={this.props.intl.formatMessage(messages.messageUpdated)}
       />,
     );
   };
@@ -300,10 +311,9 @@ class Workflow extends Component {
             this.props.transitions.length === 0
           }
           options={uniqBy(
-            this.props.transitions.map((transition) =>
-              getWorkflowMapping(transition['@id']),
-            ),
-            'label',
+            this.props.transitions.map((transition) => {
+              return getWorkflowMapping(transition['@id'], transition['title']);
+            }, 'label'),
           ).concat(selectedOption)}
           styles={customSelectStyles}
           theme={selectTheme}

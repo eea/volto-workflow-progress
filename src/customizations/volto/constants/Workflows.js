@@ -22,7 +22,7 @@ export default function getWorkflowMapping(url, current) {
       return mapping[key];
     }
 
-    return { value: key, label: key, color: '#000', url };
+    return { value: key, label: current || key, color: '#000', url };
   }
 
   if (current in mapping) {
