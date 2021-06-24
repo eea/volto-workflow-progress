@@ -4,18 +4,13 @@
  */
 
 import { last, split } from 'lodash';
+import config from '@plone/volto/registry';
 
 export default function getWorkflowMapping(url, current) {
   const mapping = {
-    published: { value: 'public', label: 'Public', color: '#007bc1', url },
-    publish: { value: 'public', label: 'Public', color: '#007bc1', url },
-    private: { value: 'private', label: 'Private', color: '#ed4033', url },
-    pending: { value: 'pending', label: 'Pending', color: '#f6a808', url },
-    send_back: { value: 'private', label: 'Private', color: '#ed4033', url },
-    retract: { value: 'private', label: 'Private', color: '#ed4033', url },
-    submit: { value: 'review', label: 'Review', color: '#f4e037', url },
+    ...config?.settings?.workflows?.state_mapping,
   };
-
+  mapping['url'] = url;
   if (url) {
     const key = last(split(url, '/'));
     if (key in mapping) {
