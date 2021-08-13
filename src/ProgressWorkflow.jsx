@@ -223,6 +223,7 @@ const ProgressWorkflow = (props) => {
                 }`}
                 id="toolbar-cut-blocks"
                 onClick={toggleVisibleSide}
+                title="Editing progress"
               >
                 {`${currentState.done}%`}
               </button>
