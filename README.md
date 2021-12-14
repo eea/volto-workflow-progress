@@ -1,7 +1,18 @@
 # volto-workflow-progress
 [![Releases](https://img.shields.io/github/v/release/eea/volto-workflow-progress)](https://github.com/eea/volto-workflow-progress/releases)
+
 [![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-workflow-progress%2Fmaster&subject=master)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-workflow-progress/job/master/display/redirect)
+[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-workflow-progress-master&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-workflow-progress-master)
+[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-workflow-progress-master&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-workflow-progress-master)
+[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-workflow-progress-master&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-workflow-progress-master)
+[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-workflow-progress-master&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-workflow-progress-master)
+
 [![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-workflow-progress%2Fdevelop&subject=develop)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-workflow-progress/job/develop/display/redirect)
+[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-workflow-progress-develop&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-workflow-progress-develop)
+[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-workflow-progress-develop&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-workflow-progress-develop)
+[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-workflow-progress-develop&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-workflow-progress-develop)
+[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-workflow-progress-develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-workflow-progress-develop)
+
 
 [Volto](https://github.com/plone/volto) add-on
 
