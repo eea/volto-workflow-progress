@@ -4,6 +4,7 @@
  */
 
 import React, { Component, Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -155,7 +156,7 @@ const customSelectStyles = {
 
 /* #131062 use title instead of id if we find the current workflow id in the history props */
 const selectedWorkflow = (props, workflow_id) => {
-  const current_state = props.history.filter((value) => {
+  const current_state = props.contentHistory.filter((value) => {
     return value.review_state === props.content.review_state;
   });
   return (current_state.length && current_state[0]['title']) || workflow_id;
@@ -176,9 +177,11 @@ class Workflow extends Component {
     getContent: PropTypes.func.isRequired,
     getWorkflow: PropTypes.func.isRequired,
     transitionWorkflow: PropTypes.func.isRequired,
+    workflowLoaded: PropTypes.func.isRequired,
     loaded: PropTypes.bool.isRequired,
+    error: PropTypes.bool.isRequired,
     pathname: PropTypes.string.isRequired,
-    history: PropTypes.arrayOf(
+    contentHistory: PropTypes.arrayOf(
       PropTypes.shape({
         review_state: PropTypes.string,
       }),
@@ -197,7 +200,7 @@ class Workflow extends Component {
    * @static
    */
   static defaultProps = {
-    history: [],
+    contentHistory: [],
     transitions: [],
   };
 
@@ -226,7 +229,17 @@ class Workflow extends Component {
     }
     if (!this.props.loaded && nextProps.loaded) {
       this.props.getWorkflow(nextProps.pathname);
+    }
+    if (!this.props.workflowLoaded && nextProps.workflowLoaded) {
       this.props.getContent(nextProps.pathname);
+    }
+    // #147129 - Redirect copy_of_ after rename via content-rules
+    if (
+      !this.props.error &&
+      nextProps.error &&
+      nextProps.pathname.includes('copy_of_')
+    ) {
+      this.props.history.push(nextProps.pathname.replace('copy_of_', ''));
     }
   }
 
@@ -344,11 +357,14 @@ class Workflow extends Component {
 export default compose(
   injectIntl,
   injectLazyLibs(['reactSelect']),
+  withRouter,
   connect(
     (state) => ({
       loaded: state.workflow.transition.loaded,
+      error: state.workflow.get.error,
+      workflowLoaded: state.workflow.get.loaded,
       content: state.content.data,
-      history: state.workflow.history,
+      contentHistory: state.workflow.history,
       transitions: state.workflow.transitions,
     }),
     { getContent, getWorkflow, transitionWorkflow },
