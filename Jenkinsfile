@@ -8,7 +8,7 @@ pipeline {
         DEPENDENCIES = ""
         ADDONS = "eea.progress.workflow"
         PROFILES = "eea.progress.workflow:default eea.kitkat:testing"
-        VOLTO = "alpha"
+        VOLTO = "latest"
     }
 
   stages {
