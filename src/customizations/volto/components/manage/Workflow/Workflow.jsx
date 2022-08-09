@@ -232,14 +232,21 @@ class Workflow extends Component {
     }
     if (!this.props.workflowLoaded && nextProps.workflowLoaded) {
       this.props.getContent(nextProps.pathname);
+      // #153145 - Redirect to the newly created version
+      if (this.state.selectedOption?.value === 'createNewVersion') {
+        this.props.history.push(`${nextProps.pathname}.1`);
+      }
     }
-    // #147129 - Redirect copy_of_ after rename via content-rules
-    if (
-      !this.props.error &&
-      nextProps.error &&
-      nextProps.pathname.includes('copy_of_')
-    ) {
-      this.props.history.push(nextProps.pathname.replace('copy_of_', ''));
+
+    if (!this.props.error && nextProps.error) {
+      // #147129 - Redirect copy_of_ after rename via content-rules
+      if (nextProps.pathname.includes('copy_of_')) {
+        this.props.history.push(nextProps.pathname.replace('copy_of_', ''));
+      }
+      // #153145 - Redirect .1 version after rename via content-rules
+      if (nextProps.pathname.endsWith('.1')) {
+        this.props.history.push(nextProps.pathname.slice(0, -2));
+      }
     }
   }
 
