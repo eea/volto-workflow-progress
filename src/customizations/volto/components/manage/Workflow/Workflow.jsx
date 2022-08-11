@@ -331,9 +331,23 @@ class Workflow extends Component {
             this.props.transitions.length === 0
           }
           options={uniqBy(
-            this.props.transitions.map((transition) => {
-              return getWorkflowMapping(transition['@id'], transition['title']);
-            }, 'label'),
+            // Remove markForDeletion transition if item is published
+            // in order not to un-publish items by mistake. This transition
+            // can still be executed from /contents - refs #153145
+            this.props.transitions
+              .map((transition) => {
+                if (
+                  transition?.['@id']?.endsWith('markForDeletion') &&
+                  this.props?.content?.review_state === 'published'
+                ) {
+                  return false;
+                }
+                return getWorkflowMapping(
+                  transition['@id'],
+                  transition['title'],
+                );
+              }, 'label')
+              .filter((item) => item),
           ).concat(selectedOption)}
           styles={customSelectStyles}
           theme={selectTheme}
