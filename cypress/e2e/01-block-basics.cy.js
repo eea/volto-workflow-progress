@@ -1,19 +1,17 @@
-import { setupBeforeEach, tearDownAfterEach } from '../support';
+import { slateBeforeEach, slateAfterEach } from '../support/e2e';
 
 describe('Blocks Tests', () => {
-  beforeEach(setupBeforeEach);
-  afterEach(tearDownAfterEach);
+  beforeEach(slateBeforeEach);
+  afterEach(slateAfterEach);
 
-  it('Add New Page', () => {
+  it('Add Block: Empty', () => {
     // Change page title
-    // Change page title
-    cy.get('[contenteditable=true]').first().clear();
-
-    cy.get('[contenteditable=true]').first().type('My Add-on Page');
+    cy.clearSlateTitle();
+    cy.getSlateTitle().type('My Add-on Page');
 
     cy.get('.documentFirstHeading').contains('My Add-on Page');
 
-    cy.get('[contenteditable=true]').first().type('{enter}');
+    cy.getSlate().click();
 
     // Add block
     cy.get('.ui.basic.icon.button.block-add-button').first().click();
@@ -26,6 +24,6 @@ describe('Blocks Tests', () => {
 
     // then the page view should contain our changes
     cy.contains('My Add-on Page');
-    cy.get('.review-state-text').contains('Private');
+    cy.get('.block.image');
   });
 });
