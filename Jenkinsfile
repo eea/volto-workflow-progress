@@ -4,7 +4,7 @@ pipeline {
   environment {
         GIT_NAME = "volto-workflow-progress"
         NAMESPACE = "@eeacms"
-        SONARQUBE_TAGS = "volto.eea.europa.eu,www.eea.europa.eu-ims,climate-energy.eea.europa.eu,demo-www.eea.europa.eu,prod-www.eea.europa.eu,circularity.eea.europa.eu,www.eea.europa.eu-en,climate-adapt.eea.europa.eu"
+        SONARQUBE_TAGS = "volto.eea.europa.eu,www.eea.europa.eu-ims,climate-energy.eea.europa.eu,demo-www.eea.europa.eu,circularity.eea.europa.eu,www.eea.europa.eu-en,climate-adapt.eea.europa.eu"
         DEPENDENCIES = ""
         VOLTO = ""
     }
