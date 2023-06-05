@@ -4,6 +4,9 @@
 @border-color: rgba(0, 0, 0, 0.3);
 @progress-indicator-color: #607d8b;
 @progress-green: darkseagreen;
+@progress-circle-diameter: 26px;
+@progress-spacing: 20px;
+@progress-padding: @progress-circle-diameter + 2 * @progress-spacing;
 
 .circle-right-btn {
   display: inline-block !important;
@@ -52,7 +55,7 @@
 
 .progress-reversed {
   position: relative;
-  padding: 0 1rem 0 3.5rem;
+  padding: 0 1rem 0 @progress-padding;
   margin: 2rem 0 0;
   counter-reset: item;
   list-style: none;
@@ -82,15 +85,14 @@
 .progress__item {
   position: relative;
   min-height: 75px;
-  padding-left: 0.5rem;
   counter-increment: item -1;
 
   &:before {
     position: absolute;
-    top: 26px;
-    left: -1.6rem;
+    top: @progress-circle-diameter;
+    left: -@progress-padding / 2 - 1px;
     width: 1px;
-    height: calc(100% - 26px);
+    height: calc(100% - @progress-circle-diameter);
     border-left: 1px solid @progress-indicator-color;
     content: '';
   }
@@ -98,9 +100,9 @@
   &:after {
     position: absolute;
     top: 0;
-    left: -2.5rem;
-    width: 26px;
-    height: 26px;
+    left: -@progress-circle-diameter - @progress-spacing;
+    width: @progress-circle-diameter;
+    height: @progress-circle-diameter;
     border: 1px solid @progress-indicator-color;
     background: white;
     border-radius: 50%;
@@ -108,7 +110,7 @@
     content: ' ';
     font-size: 13px;
     font-weight: 400;
-    line-height: 22px;
+    line-height: @progress-circle-diameter + 2px;
     text-align: center;
   }
 
