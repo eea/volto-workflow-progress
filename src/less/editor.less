@@ -7,6 +7,8 @@
 @progress-circle-diameter: 26px;
 @progress-spacing: 20px;
 @progress-padding: @progress-circle-diameter + 2 * @progress-spacing;
+@progress-sidebar-width: 200px;
+@progress-sidebar-left: 80px;
 
 .circle-right-btn {
   display: inline-block !important;
@@ -27,12 +29,14 @@
   position: fixed;
   z-index: 1;
   top: 0;
-  left: 80px;
-  width: 200px;
   padding: 8px 0;
   background: #fff;
   box-shadow: 0 1px 2px 0 #c7d5d8;
   overflow-x: hidden;
+  &.sidenav-ol--wp {
+    left: @progress-sidebar-left;
+    width: @progress-sidebar-width;
+  }
 }
 
 .is-hidden {
