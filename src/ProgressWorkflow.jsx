@@ -227,7 +227,7 @@ const ProgressWorkflow = (props) => {
               >
                 {`${currentState.done}%`}
               </button>
-              <div className={`sidenav-ol is-hidden`}>
+              <div className={`sidenav-ol sidenav-ol--wp is-hidden`}>
                 <ol
                   className="progress-reversed"
                   style={{
