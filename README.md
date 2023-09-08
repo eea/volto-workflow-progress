@@ -20,7 +20,7 @@ Toolbar enhanced workflow [Volto](https://github.com/plone/volto) add-on
 
 - Toolbar enhanced workflow slot
 
-![Workflow Progress](./docs/volto-workflow-progress.gif)
+![Workflow Progress](https://raw.githubusercontent.com/eea/volto-workflow-progress/develop/docs/volto-workflow-progress.gif)
 
 ## Getting started
 
