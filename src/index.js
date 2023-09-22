@@ -29,10 +29,8 @@ const applyConfig = (config) => {
     },
   };
 
-  const appExtras = config.settings.appExtras || [];
-
   config.settings.appExtras = [
-    ...appExtras,
+    ...(config.settings.appExtras || []),
     {
       match: '',
       component: ProgressWorkflow,
