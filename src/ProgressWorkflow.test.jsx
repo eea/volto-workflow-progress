@@ -24,6 +24,7 @@ const propsEmpty = {};
 describe('ProgressWorkflow', () => {
   it('renders the ProgressWorkflow component without breaking if props and workflow are empty', () => {
     const store = mockStore({
+      token: 'secret',
       intl: {
         locale: 'en',
         messages: {},
@@ -47,6 +48,7 @@ describe('ProgressWorkflow', () => {
 
   it('renders the ProgressWorkflow component', () => {
     const store = mockStore({
+      token: 'secret',
       intl: {
         locale: 'en',
         messages: {},
@@ -108,13 +110,14 @@ describe('ProgressWorkflow', () => {
 
   it('renders the ProgressWorkflow component with Percent showing correct value', () => {
     const store = mockStore({
+      token: 'secret',
       intl: {
         locale: 'en',
         messages: {},
       },
       workflowProgress: {
         '@id': 'http://localhost:3000/api/my-page/@workflow.progress',
-        done: 50,
+        done: 100,
         steps: [
           [
             ['private'],
