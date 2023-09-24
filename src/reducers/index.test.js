@@ -7,7 +7,6 @@ describe('workflowProgress reducer', () => {
       loading: false,
       error: null,
     },
-    subrequests: {},
   };
 
   it('handles WORKFLOW_PROGRESS_PENDING action', () => {
@@ -19,7 +18,6 @@ describe('workflowProgress reducer', () => {
         loaded: false,
         error: null,
       },
-      subrequests: {},
     });
   });
 
