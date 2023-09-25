@@ -57,6 +57,8 @@ describe('ProgressWorkflow', () => {
         '@id': 'http://localhost:3000/api/my-page/@workflow.progress',
         done: 50,
         steps: [
+          [['archived'], 0, ['Archived'], ['Not visible to the public.']],
+          [['deleted'], 0, ['Deleted'], ['Not visible to the public.']],
           [
             ['private'],
             25,
