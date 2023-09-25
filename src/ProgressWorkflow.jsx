@@ -56,7 +56,7 @@ const ProgressWorkflow = (props) => {
   const [workflowProgressSteps, setWorkflowProgressSteps] = useState([]);
   const [currentState, setCurrentState] = useState(null);
   const workflowProgress = useSelector((state) => {
-    if (state?.workflowProgress?.workflow?.loaded === true) {
+    if (state?.workflowProgress?.get?.loaded === true) {
       const progress = state?.workflowProgress?.result;
       if (
         progress &&
@@ -141,7 +141,7 @@ const ProgressWorkflow = (props) => {
       basePathname !== '/' && // wihout this there will be a flicker for going back to home ('/' is included in all api paths)
       workflowProgress?.result?.steps &&
       workflowProgress.result.steps.length > 0 &&
-      !workflowProgress.workflow?.error &&
+      !workflowProgress.get?.error &&
       Array.isArray(workflowProgress?.result?.steps)
     ) {
       findCurrentState(

@@ -22,8 +22,15 @@ describe('Blocks Tests', () => {
     cy.get('#toolbar-save').click();
     cy.url().should('eq', Cypress.config().baseUrl + '/cypress/my-page');
 
+    cy.waitForResourceToLoad('@workflow.progress');
+
     // then the page view should contain our changes
     cy.contains('My Add-on Page');
     cy.get('.block.image');
+
+    // Workflow progress is present
+    cy.get('#toolbar-workflow-progress button').click();
+    cy.get('.sidenav-ol').contains('Pending review');
+
   });
 });
