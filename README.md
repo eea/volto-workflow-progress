@@ -15,25 +15,34 @@
 [![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-workflow-progress-develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-workflow-progress-develop)
 
 
-Toolbar enhanced workflow [Volto](https://github.com/plone/volto) add-on
+[Volto](https://github.com/plone/volto) add-on
 
 ## Features
 
-- Toolbar enhanced workflow slot
+Demo GIF
 
 ## Getting started
 
-1. Create new volto project if you don't already have one:
+### Try volto-workflow-progress with Docker
 
+      git clone https://github.com/eea/volto-workflow-progress.git
+      cd volto-workflow-progress
+      make
+      make start
+
+Go to http://localhost:3000
+
+### Add volto-workflow-progress to your Volto project
+
+1. Make sure you have a [Plone backend](https://plone.org/download) up-and-running at http://localhost:8080/Plone
+
+   ```Bash
+   docker compose up backend
    ```
-   $ npm install -g yo @plone/generator-volto
-   $ yo @plone/volto my-volto-project --addon @eeacms/volto-workflow-progress
 
-   $ cd my-volto-project
-   $ yarn add -W @eeacms/volto-workflow-progress
-   ```
+1. Start Volto frontend
 
-1. If you already have a volto project, just update `package.json`:
+* If you already have a volto project, just update `package.json`:
 
    ```JSON
    "addons": [
@@ -45,24 +54,24 @@ Toolbar enhanced workflow [Volto](https://github.com/plone/volto) add-on
    }
    ```
 
+* If not, create one:
+
+   ```
+   npm install -g yo @plone/generator-volto
+   yo @plone/volto my-volto-project --canary --addon @eeacms/volto-workflow-progress
+   cd my-volto-project
+   ```
+
 1. Install new add-ons and restart Volto:
 
    ```
-   $ yarn
-   $ yarn start
+   yarn
+   yarn start
    ```
 
 1. Go to http://localhost:3000
 
 1. Happy editing!
-
-## Dependencies
-
-### Backend
-
-- [Plone](https://plone.org/download)
-- [plone.restapi](https://pypi.org/project/plone.restapi/)
-- [eea.progress.workflow](https://pypi.org/project/eea.progress.workflow)
 
 ## Release
 
