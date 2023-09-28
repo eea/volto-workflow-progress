@@ -14,12 +14,13 @@
 [![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-workflow-progress-develop&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-workflow-progress-develop)
 [![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-workflow-progress-develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-workflow-progress-develop)
 
-
-[Volto](https://github.com/plone/volto) add-on
+[Volto](https://github.com/plone/volto) add-on to give Plone Content Editors an overview of Document's publication workflow progress.
 
 ## Features
 
-Demo GIF
+### Demo - Customize Workflow state's percentage via ZMI
+
+[![Workflow Progress](https://raw.githubusercontent.com/eea/volto-workflow-progress/master/docs/volto-workflow-progress.gif)](https://youtu.be/MV2_23_dBkc?si=8nHRxqQmnj8yy1Cb)
 
 ## Getting started
 
