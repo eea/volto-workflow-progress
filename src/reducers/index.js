@@ -11,18 +11,7 @@ const initialState = {
     loading: false,
     error: null,
   },
-  subrequests: {},
 };
-
-/**
- * Get request key
- * @function getRequestKey
- * @param {string} actionType Action type.
- * @returns {string} Request key.
- */
-function getRequestKey(actionType) {
-  return actionType.split('_')[0].toLowerCase();
-}
 
 /**
  * Data figure reducer.
@@ -37,7 +26,7 @@ export function workflowProgress(state = initialState, action = {}) {
     case `${WORKFLOW_PROGRESS}_PENDING`:
       return {
         ...state,
-        [getRequestKey(action.type)]: {
+        get: {
           loading: true,
           loaded: false,
           error: null,
@@ -46,7 +35,7 @@ export function workflowProgress(state = initialState, action = {}) {
     case `${WORKFLOW_PROGRESS}_SUCCESS`:
       return {
         ...state,
-        [getRequestKey(action.type)]: {
+        get: {
           loading: false,
           loaded: true,
           error: null,
@@ -56,7 +45,7 @@ export function workflowProgress(state = initialState, action = {}) {
     case `${WORKFLOW_PROGRESS}_FAIL`:
       return {
         ...state,
-        [getRequestKey(action.type)]: {
+        get: {
           loading: false,
           loaded: false,
           error: action.error,

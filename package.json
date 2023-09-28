@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/volto-workflow-progress",
-  "version": "3.1.1",
+  "version": "4.0.0",
   "description": "volto-workflow-progress: Volto add-on",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
@@ -20,9 +20,9 @@
     "@cypress/code-coverage": "^3.10.0",
     "@plone/scripts": "*",
     "babel-plugin-transform-class-properties": "^6.24.1",
-    "md5": "^2.3.0",
     "husky": "*",
-    "lint-staged": "*"
+    "lint-staged": "*",
+    "md5": "^2.3.0"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json}": [

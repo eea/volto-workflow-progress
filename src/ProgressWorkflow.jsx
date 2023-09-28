@@ -1,8 +1,7 @@
-import { Pluggable } from '@plone/volto/components/manage/Pluggable';
+import { Pluggable, Plug } from '@plone/volto/components/manage/Pluggable';
 import { getBaseUrl } from '@plone/volto/helpers';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
-import { Portal } from 'react-portal';
 import { useDispatch, useSelector } from 'react-redux';
 import { doesNodeContainClick } from 'semantic-ui-react/dist/commonjs/lib';
 import { getWorkflowProgress } from './actions';
@@ -42,7 +41,8 @@ const itemTracker = (tracker, currentStateKey, currentState) => {
  * @summary The React component that shows progress tracking of selected content.
  */
 const ProgressWorkflow = (props) => {
-  const { content, pathname } = props;
+  const { content, pathname, token } = props;
+  const isAuth = !!token;
   const currentStateKey = content?.review_state;
   const dispatch = useDispatch();
   const contentId = content?.['@id'];
@@ -53,12 +53,10 @@ const ProgressWorkflow = (props) => {
     pathname.endsWith('/contents') ||
     pathname.endsWith('/edit') ||
     pathname === basePathname;
-  const [isToolbarOpen, setIsToolbarOpen] = useState(false);
   const [workflowProgressSteps, setWorkflowProgressSteps] = useState([]);
   const [currentState, setCurrentState] = useState(null);
-  const token = useSelector((state) => state?.userSession?.token);
   const workflowProgress = useSelector((state) => {
-    if (state?.workflowProgress?.workflow?.loaded === true) {
+    if (state?.workflowProgress?.get?.loaded === true) {
       const progress = state?.workflowProgress?.result;
       if (
         progress &&
@@ -101,7 +99,6 @@ const ProgressWorkflow = (props) => {
         description,
       });
     };
-    const hasToolbar = document.querySelector('#toolbar .toolbar-actions');
 
     /**
      * remove states that are 0% unless if it is current state
@@ -136,8 +133,6 @@ const ProgressWorkflow = (props) => {
       return result;
     };
 
-    setIsToolbarOpen(!!hasToolbar);
-
     // filter out paths that don't have workflow (home, login, dexterity even if the content obj stays the same etc)
     if (
       contentId &&
@@ -146,7 +141,7 @@ const ProgressWorkflow = (props) => {
       basePathname !== '/' && // wihout this there will be a flicker for going back to home ('/' is included in all api paths)
       workflowProgress?.result?.steps &&
       workflowProgress.result.steps.length > 0 &&
-      !workflowProgress.workflow?.error &&
+      !workflowProgress.get?.error &&
       Array.isArray(workflowProgress?.result?.steps)
     ) {
       findCurrentState(
@@ -205,58 +200,52 @@ const ProgressWorkflow = (props) => {
     private: 'private',
   };
 
-  return (
-    isToolbarOpen && (
-      <Portal
-        node={__CLIENT__ && document.querySelector('#toolbar .toolbar-actions')}
-      >
-        {currentState && contentContainsPathname ? (
-          <>
-            <div ref={pusherRef}>
-              <button
-                className={`circle-right-btn ${
-                  currentStateClass[currentStateKey]
-                    ? `review-state-${currentStateKey}`
-                    : currentState.done === 100
-                    ? 'review-state-published'
-                    : ''
-                }`}
-                id="toolbar-cut-blocks"
-                onClick={toggleVisibleSide}
-                title="Editing progress"
-              >
-                {`${currentState.done}%`}
-              </button>
-              <div className={`sidenav-ol sidenav-ol--wp is-hidden`}>
-                <ol
-                  className="progress-reversed"
-                  style={{
-                    counterReset: `item ${workflowProgressSteps.length + 1}`,
-                  }}
-                >
-                  {workflowProgressSteps.map((progressItem) =>
-                    itemTracker(progressItem, currentStateKey, currentState),
-                  )}
-                </ol>
-              </div>
-            </div>
-            <div
-              className={`review-state-text ${
-                currentStateClass[currentStateKey]
-                  ? `review-state-${currentStateKey}`
-                  : currentState.done === 100
-                  ? 'review-state-published'
-                  : ''
-              }`}
+  return isAuth && currentState && contentContainsPathname ? (
+    <Plug pluggable="main.toolbar.top" id="volto-workflow-progress" order={0}>
+      <div className="toolbar-workflow-progress" id="toolbar-workflow-progress">
+        <div ref={pusherRef}>
+          <button
+            className={`circle-right-btn ${
+              currentStateClass[currentStateKey]
+                ? `review-state-${currentStateKey}`
+                : currentState.done === 100
+                ? 'review-state-published'
+                : ''
+            }`}
+            id="toolbar-cut-blocks"
+            onClick={toggleVisibleSide}
+            title="Editing progress"
+          >
+            {`${currentState.done}%`}
+          </button>
+          <div className={`sidenav-ol sidenav-ol--wp is-hidden`}>
+            <ol
+              className="progress-reversed"
+              style={{
+                counterReset: `item ${workflowProgressSteps.length + 1}`,
+              }}
             >
-              {currentState.title}
-            </div>
-          </>
-        ) : (
-          <></>
-        )}
-      </Portal>
-    )
+              {workflowProgressSteps.map((progressItem) =>
+                itemTracker(progressItem, currentStateKey, currentState),
+              )}
+            </ol>
+          </div>
+        </div>
+        <div
+          className={`review-state-text ${
+            currentStateClass[currentStateKey]
+              ? `review-state-${currentStateKey}`
+              : currentState.done === 100
+              ? 'review-state-published'
+              : ''
+          }`}
+        >
+          {currentState.title}
+        </div>
+      </div>
+    </Plug>
+  ) : (
+    ''
   );
 };
 
