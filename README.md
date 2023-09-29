@@ -22,6 +22,14 @@
 
 [![Workflow Progress](https://raw.githubusercontent.com/eea/volto-workflow-progress/master/docs/volto-workflow-progress.gif)](https://youtu.be/MV2_23_dBkc?si=8nHRxqQmnj8yy1Cb)
 
+## Dependencies
+
+### Backend
+
+- [Plone](https://plone.org/download)
+- [plone.restapi](https://pypi.org/project/plone.restapi/)
+- [eea.progress.workflow](https://pypi.org/project/eea.progress.workflow)
+
 ## Getting started
 
 ### Try volto-workflow-progress with Docker
