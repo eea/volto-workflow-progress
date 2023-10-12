@@ -30,14 +30,12 @@ Before starting make sure your development environment is properly set. See [Vol
 
 1.  Make sure you have installed `yo`, `@plone/generator-volto` and `mrs-developer`
 
-        $ npm install -g yo
-        $ npm install -g @plone/generator-volto
-        $ npm install -g mrs-developer
+        npm install -g yo @plone/generator-volto mrs-developer
 
 1.  Create new volto app
 
-        $ yo @plone/volto my-volto-project --addon @eeacms/volto-workflow-progress
-        $ cd my-volto-project
+        yo @plone/volto my-volto-project --addon @eeacms/volto-workflow-progress --skip-install
+        cd my-volto-project
 
 1.  Add the following to `mrs.developer.json`:
 
@@ -52,12 +50,12 @@ Before starting make sure your development environment is properly set. See [Vol
 
 1.  Install
 
-        $ make develop
-        $ yarn
+        make develop
+        yarn
 
 1.  Start backend
 
-        docker run --pull always -it --rm --name plone -p 8080:8080 -e SITE=Plone -e ADDONS="eea.progress.workflow" -e PROFILES="eea.progress.workflow:default" plone/plone-backend
+        docker run --pull always -it --rm --name plone -p 8080:8080 -e SITE=Plone plone/plone-backend
 
     ...wait for backend to setup and start - `Ready to handle requests`:
 
@@ -65,13 +63,13 @@ Before starting make sure your development environment is properly set. See [Vol
 
 1.  Start frontend
 
-        $ yarn start
+        yarn start
 
 1.  Go to http://localhost:3000
 
 1.  Happy hacking!
 
-        $ cd src/addons/volto-workflow-progress/
+        cd src/addons/volto-workflow-progress/
 
 ## Cypress
 
