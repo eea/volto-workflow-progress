@@ -86,9 +86,8 @@ const ProgressWorkflow = (props) => {
       const arrayContainingCurrentState = steps.find(
         (itemElements) => itemElements[1] === done,
       );
-      const indexOfCurrentStateKey = arrayContainingCurrentState[0].indexOf(
-        currentStateKey,
-      );
+      const indexOfCurrentStateKey =
+        arrayContainingCurrentState[0].indexOf(currentStateKey);
       const title = arrayContainingCurrentState[2][indexOfCurrentStateKey];
       const description =
         arrayContainingCurrentState[3][indexOfCurrentStateKey];
@@ -117,9 +116,8 @@ const ProgressWorkflow = (props) => {
           ? states // return all states
           : (() => {
               // there are 0% states
-              const indexOfCurrentStateKey = firstState[0].indexOf(
-                currentStateKey,
-              );
+              const indexOfCurrentStateKey =
+                firstState[0].indexOf(currentStateKey);
               if (indexOfCurrentStateKey > -1) {
                 const keys = [firstState[0][indexOfCurrentStateKey]];
                 const titles = [firstState[2][indexOfCurrentStateKey]];
