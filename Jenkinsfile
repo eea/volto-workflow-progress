@@ -11,8 +11,8 @@ pipeline {
     NAMESPACE = "@eeacms"
     SONARQUBE_TAGS = "volto.eea.europa.eu,www.eea.europa.eu-ims,climate-energy.eea.europa.eu,demo-www.eea.europa.eu,www.eea.europa.eu-en,climate-adapt.eea.europa.eu"
     DEPENDENCIES = ""
-    BACKEND_PROFILES = "eea.kitkat:testing"
-    BACKEND_ADDONS = ""
+    BACKEND_PROFILES = "eea.kitkat:testing eea.progress.workflow:default"
+    BACKEND_ADDONS = "eea.progress.workflow"
     VOLTO = "17"
     VOLTO16_BREAKING_CHANGES = "no"
     IMAGE_NAME = BUILD_TAG.toLowerCase()
