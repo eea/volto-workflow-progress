@@ -1,5 +1,5 @@
 import { Pluggable, Plug } from '@plone/volto/components/manage/Pluggable';
-import { getBaseUrl } from '@plone/volto/helpers';
+import { getBaseUrl, flattenToAppURL } from '@plone/volto/helpers';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -48,7 +48,7 @@ const ProgressWorkflow = (props) => {
   const contentId = content?.['@id'];
   const basePathname = getBaseUrl(pathname);
   const contentContainsPathname =
-    contentId && basePathname && contentId.endsWith(basePathname);
+    contentId && basePathname && flattenToAppURL(contentId) === basePathname;
   const fetchCondition =
     pathname.endsWith('/contents') ||
     pathname.endsWith('/edit') ||
@@ -60,7 +60,7 @@ const ProgressWorkflow = (props) => {
       const progress = state?.workflowProgress?.result;
       if (
         progress &&
-        progress['@id'].endsWith(basePathname + '/@workflow.progress')
+        flattenToAppURL(progress['@id']).endsWith(basePathname + '/@workflow.progress')
       ) {
         return state?.workflowProgress;
       }
