@@ -48,7 +48,9 @@ const ProgressWorkflow = (props) => {
   const contentId = content?.['@id'];
   const basePathname = getBaseUrl(pathname);
   const contentContainsPathname =
-    contentId && basePathname && flattenToAppURL(contentId).endsWith(basePathname);
+    contentId &&
+    basePathname &&
+    flattenToAppURL(contentId).endsWith(basePathname);
   const fetchCondition =
     pathname.endsWith('/contents') ||
     pathname.endsWith('/edit') ||
