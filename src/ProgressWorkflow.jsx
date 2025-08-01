@@ -60,7 +60,9 @@ const ProgressWorkflow = (props) => {
       const progress = state?.workflowProgress?.result;
       if (
         progress &&
-        flattenToAppURL(progress['@id']).endsWith(basePathname + '/@workflow.progress')
+        flattenToAppURL(progress['@id']).endsWith(
+          basePathname + '/@workflow.progress',
+        )
       ) {
         return state?.workflowProgress;
       }
