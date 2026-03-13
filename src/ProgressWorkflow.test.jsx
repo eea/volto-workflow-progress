@@ -5,6 +5,7 @@
 // ca nu face nimic daca nu exista toolbar
 
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-intl-redux';
 import { MemoryRouter } from 'react-router-dom';
 import renderer from 'react-test-renderer';
@@ -22,6 +23,14 @@ const props = {
 const propsEmpty = {};
 
 describe('ProgressWorkflow', () => {
+  let component;
+
+  afterEach(() => {
+    act(() => {
+      component.unmount();
+    });
+  });
+
   it('renders the ProgressWorkflow component without breaking if props and workflow are empty', () => {
     const store = mockStore({
       token: 'secret',
@@ -31,17 +40,19 @@ describe('ProgressWorkflow', () => {
       },
       workflowProgress: {},
     });
-    const component = renderer.create(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ProgressWorkflow
-            pathname="/test"
-            {...propsEmpty}
-            hasToolbar={true}
-          />
-        </MemoryRouter>
-      </Provider>,
-    );
+    act(() => {
+      component = renderer.create(
+        <Provider store={store}>
+          <MemoryRouter>
+            <ProgressWorkflow
+              pathname="/test"
+              {...propsEmpty}
+              hasToolbar={true}
+            />
+          </MemoryRouter>
+        </Provider>,
+      );
+    });
     const json = component.toJSON();
     expect(json).toMatchSnapshot();
   });
@@ -99,13 +110,15 @@ describe('ProgressWorkflow', () => {
         ],
       },
     });
-    const component = renderer.create(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ProgressWorkflow pathname="/test" {...props} hasToolbar={true} />
-        </MemoryRouter>
-      </Provider>,
-    );
+    act(() => {
+      component = renderer.create(
+        <Provider store={store}>
+          <MemoryRouter>
+            <ProgressWorkflow pathname="/test" {...props} hasToolbar={true} />
+          </MemoryRouter>
+        </Provider>,
+      );
+    });
     const json = component.toJSON();
     expect(json).toMatchSnapshot();
   });
@@ -161,13 +174,15 @@ describe('ProgressWorkflow', () => {
         ],
       },
     });
-    const component = renderer.create(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ProgressWorkflow pathname="/test" {...props} hasToolbar={true} />
-        </MemoryRouter>
-      </Provider>,
-    );
+    act(() => {
+      component = renderer.create(
+        <Provider store={store}>
+          <MemoryRouter>
+            <ProgressWorkflow pathname="/test" {...props} hasToolbar={true} />
+          </MemoryRouter>
+        </Provider>,
+      );
+    });
 
     const json = component.toJSON();
     expect(json).toMatchSnapshot();
