@@ -8,7 +8,7 @@ pipeline {
     NAMESPACE = "@eeacms"
     SONARQUBE_TAGS = "volto.eea.europa.eu,climate-energy.eea.europa.eu,demo-www.eea.europa.eu,www.eea.europa.eu-en,www.eea.europa.eu,climate-adapt.eea.europa.eu,biodiversity.europa.eu"
     DEPENDENCIES = ""
-    BACKEND_PROFILES = "eea.kitkat:testing eea.progress.workflow:default"
+    BACKEND_PROFILES = "eea.kitkat:testing,eea.progress.workflow:default"
     BACKEND_ADDONS = "eea.progress.workflow"
     VOLTO = "17"
     VOLTO18_BREAKING_CHANGES = "no"
