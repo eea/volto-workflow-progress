@@ -1,5 +1,5 @@
 import { Pluggable, Plug } from '@plone/volto/components/manage/Pluggable';
-import { getBaseUrl, flattenToAppURL } from '@plone/volto/helpers';
+import { getBaseUrl, flattenToAppURL } from '@plone/volto/helpers/Url/Url';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,8 +18,8 @@ const itemTracker = (tracker, currentStateKey, currentState) => {
         is_active
           ? 'progress__item--active'
           : tracker[1] < currentState.done
-          ? 'progress__item--completed'
-          : 'progress__item--next'
+            ? 'progress__item--completed'
+            : 'progress__item--next'
       }`}
     >
       {tracker[2].map((title, index) => (
@@ -211,8 +211,8 @@ const ProgressWorkflow = (props) => {
               currentStateClass[currentStateKey]
                 ? `review-state-${currentStateKey}`
                 : currentState.done === 100
-                ? 'review-state-published'
-                : ''
+                  ? 'review-state-published'
+                  : ''
             }`}
             id="toolbar-cut-blocks"
             onClick={toggleVisibleSide}
@@ -238,8 +238,8 @@ const ProgressWorkflow = (props) => {
             currentStateClass[currentStateKey]
               ? `review-state-${currentStateKey}`
               : currentState.done === 100
-              ? 'review-state-published'
-              : ''
+                ? 'review-state-published'
+                : ''
           }`}
         >
           {currentState.title}
