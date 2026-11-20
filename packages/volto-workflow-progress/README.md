@@ -12,6 +12,25 @@
 
 [![Workflow Progress](https://raw.githubusercontent.com/eea/volto-workflow-progress/master/docs/volto-workflow-progress.gif)](https://youtu.be/MV2_23_dBkc?si=8nHRxqQmnj8yy1Cb)
 
+## Upgrade
+
+### Upgrading to 7.x
+
+> This version requires `Volto 18` or `Volto 19` and Node.js 22.
+
+No API or behaviour change: the control panel id and route, the exported components, the request
+paths and the CSS classes are the same as 6.x. The release adds Volto 19 support and moves the
+repository to the Volto 19 layout, where the published package lives in
+`packages/volto-workflow-progress`.
+
+#### Breaking changes
+
+- **Node.js 22 or newer is required** (`engines.node >= 22`), 6.x declared no engine.
+- **React 18 is required.** The package declares `react` and `react-dom` as `^18.2.0` peers, 6.x
+  declared no peers.
+- **The package no longer ships the repository tooling.** The Cypress specs and the Jest setup are
+  gone and the unit tests moved to Vitest next to the add-on, so nothing a site imports was removed.
+
 ## Dependencies
 
 ### Backend
